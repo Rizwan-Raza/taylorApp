@@ -1,0 +1,15 @@
+<aside *ngIf="processing">
+    <mat-progress-spinner mode="indeterminate">
+    </mat-progress-spinner>
+  </aside>
+  <div *ngIf="!processing">
+    <h1 class="themed-text">Request New User</h1>
+    <form [formGroup]="requestNew" (submit)="submit()">
+      <mat-form-field>
+        <input matInput type="text" placeholder="E-mail address" required formControlName="email">
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary">Send</button>
+    </form>
+  </div>
+  

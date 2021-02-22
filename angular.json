@@ -23,7 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/@angular/material/prebuilt-themes/purple-yellow.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -155,11 +155,11 @@
   "defaultProject": "angular-electron",
   "schematics": {
     "@schematics/angular:component": {
-      "prefix": "app",
+      "prefix": "kt",
       "style": "scss"
     },
     "@schematics/angular:directive": {
-      "prefix": "app"
+      "prefix": "kt"
     }
   }
 }

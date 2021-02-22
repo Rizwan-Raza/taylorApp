@@ -4,8 +4,8 @@
   "description": "Angular 11 with Electron (Typescript + SASS + Hot Reload)",
   "homepage": "https://github.com/maximegris/angular-electron",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Rizwan Raza",
+    "email": "team.marstech@gmail.com"
   },
   "keywords": [
     "angular",
@@ -43,8 +43,10 @@
   "dependencies": {
     "@angular/animations": "^11.0.0 || ^12.0.0-0",
     "@angular/cdk": "11.2.1",
+    "@angular/fire": "6.1.4",
     "@angular/forms": "^11.0.0 || ^12.0.0-0",
-    "@angular/material": "11.2.1"
+    "@angular/material": "11.2.1",
+    "firebase": "8.2.9"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "11.0.0",

@@ -1,18 +1,25 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { PageNotFoundComponent } from './shared/components';
-// import { NavbarComponent } from './core/navbar/navbar.component';
+import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './account/components/login/login.component';
-import { NavbarComponent } from './core/navbar/navbar.component';
-// import { HomeRoutingModule } from './home/home-routing.module';
-// import { DetailRoutingModule } from './detail/detail-routing.module';
+import { LoginGuard } from './account/guards/login.guard';
+import { HomeComponent } from './dashboard/components/home/home.component';
+import { DashboardRoutingModule } from './dashboard/dashboard-routing.module';
+import { PageNotFoundComponent } from './shared/components/';
 
 const routes: Routes = [
   {
+    path: 'dashboard',
+    canLoad: [LoginGuard],
+    loadChildren: './dashboard/dashboard-routing.module#DashboardRoutingModule',
+  },
+  {
     path: '',
-    component: NavbarComponent
-    // redirectTo: 'home',
-    // pathMatch: 'full'
+    pathMatch: "full",
+    redirectTo: 'dashboard',
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',
@@ -23,8 +30,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-    // HomeRoutingModule,
-    // DetailRoutingModule
+    DashboardRoutingModule
   ],
   exports: [RouterModule]
 })
