@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +13,9 @@ import { HomeComponent } from './components/home/home.component';
 import { MensComponent } from './components/mens/mens.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './dashboard.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 
 @NgModule({
   declarations: [MensComponent, NavbarComponent, HomeComponent, DashboardComponent],
@@ -26,7 +29,10 @@ import { DashboardComponent } from './dashboard.component';
     MatDividerModule,
     BrowserModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ]
 })
 export class DashboardModule { }
