@@ -6,7 +6,7 @@ import { LoginService } from '../services/account.service';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuard implements CanActivate {
+export class DashboardGuard implements CanActivate {
   constructor(private _loginService: LoginService, private _router: Router) {
   }
 
@@ -14,11 +14,11 @@ export class LoginGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this._loginService.isAuthenticated()) {
-      this._router.navigate(['/dashboard']);
-      console.log("LoginGuard T");
+      // console.log("DG T");
       return true;
     }
-    console.log("LoginGuard F");
+    // console.log("DG F");
+    this._router.navigate(['/login']);
     return false;
   }
 

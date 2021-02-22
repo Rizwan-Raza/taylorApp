@@ -11,6 +11,7 @@ import { LoginService } from '../../../account/services/account.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
+  isHandset: boolean = false;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -20,7 +21,9 @@ export class NavbarComponent {
 
   @Input("title") title: string;
 
-  constructor(private breakpointObserver: BreakpointObserver, private loginService: LoginService, private _router: Router) { }
+  constructor(private breakpointObserver: BreakpointObserver, private loginService: LoginService, private _router: Router) {
+    this.isHandset$.subscribe(val => (this.isHandset = val));
+  }
 
   async logout() {
     await this.loginService.logout();

@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     this.loginService.login(email, this.loginForm.value.password).then(data => {
       localStorage.setItem("user", JSON.stringify({ uid: data.user.uid, email: data.user.email }));
       localStorage.setItem("isLogin", "1");
-      this._router.navigate(['/']);
+      this._router.navigate(['/dashboard']);
     }, error => {
       let sbRef = this.snackbar.open(error.message, 'CLOSE', { duration: 5000 });
       sbRef.onAction().subscribe(() => {
