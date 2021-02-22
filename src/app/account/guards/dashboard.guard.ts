@@ -14,10 +14,10 @@ export class DashboardGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this._loginService.isAuthenticated()) {
-      // console.log("DG T");
+      console.log("Allow Dash");
       return true;
     }
-    // console.log("DG F");
+    console.log("Redirect Login");
     this._router.navigate(['/login']);
     return false;
   }
