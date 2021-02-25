@@ -29,6 +29,14 @@ export class AddMeasurementsComponent {
   measurementsModel: Measurements;
   billingModel: Billing;
 
+  getCustomerFormError(): string {
+    let fields: string[] = [];
+    this.customerForm.controls['firstName'].hasError('required') && fields.push("Name");
+    this.customerForm.controls['phoneNumber'].hasError('required') && fields.push("Phone");
+    this.customerForm.controls['tailoring'].hasError('required') && fields.push("Tailoring");
+    return fields.length > 1 && (fields.slice(0, fields.length - 1).join(", ") + " and ") + fields.slice(-1) + (fields.length > 1 ? " are " : " is ") + "required";
+  }
+
   @ViewChild('stepper') stepper: MatStepper;
 
   constructor(private _formBuilder: FormBuilder, private _measurementsService: MeasurementsService, public dialog: MatDialog) { }
@@ -59,7 +67,7 @@ export class AddMeasurementsComponent {
       ],
       email: [null],
       address: [null],
-      tailoring: [null]
+      tailoring: [null, Validators.required]
     });
 
     this.measurementForm = this._formBuilder.group({
@@ -98,10 +106,19 @@ export class AddMeasurementsComponent {
     this.measurementsModel = new Measurements(this.measurementForm.value);
     this.billingModel = new Billing(this.billingForm.value);
 
-    this._measurementsService.addNew(new Record(this.customerModel, this.measurementsModel, this.billingModel, Date.now())).then(_ => {
+    let recordToAdd = new Record(
+      this.customerModel,
+      this.measurementsModel,
+      this.billingModel,
+      Date.now(),
+      (JSON.parse(localStorage.getItem("user")) as { uid: string, email: string }).uid
+    );
+
+    this._measurementsService.addNew(recordToAdd).then(_ => {
       dialog.close();
       alert("Record added successfully!");
       this.stepper.reset();
+      console.log(recordToAdd.uid + recordToAdd.date);
     }).catch(err => {
       dialog.close();
       alert("Something went wrong. Try again. \n\nError: " + err.message);

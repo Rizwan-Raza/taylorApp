@@ -28,7 +28,7 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
   filterString: string;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['sno', 'customer.firstName', 'customer.phoneNumer', 'billing.status', 'completed', 'date']
+  displayedColumns = ['sno', 'customer.firstName', 'customer.phoneNumer', 'billing.status', 'completed', 'date', 'actions'];
 
   ngOnInit() {
     this.filterString = this.route.snapshot.params.filter;

@@ -1,5 +1,5 @@
 <mat-horizontal-stepper [linear]="false" #stepper class="mat-elevation-z8">
-  <mat-step [stepControl]="customerForm" errorMessage="Name and phone number are required." #customer>
+  <mat-step [stepControl]="customerForm" [errorMessage]="getCustomerFormError()" #customer>
     <form [formGroup]="customerForm">
       <ng-template matStepLabel>Customer Information</ng-template>
       <div class="row">
@@ -46,6 +46,9 @@
         <mat-label>Tailoring</mat-label>
         <input matInput formControlName="tailoring">
         <mat-hint>Customer requested to tailor what?</mat-hint>
+        <mat-error *ngIf="customerForm.controls['tailoring'].hasError('required')">
+          Tailoring info is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
       <div align="end">
         <button mat-raised-button matStepperNext color="primary">Next</button>

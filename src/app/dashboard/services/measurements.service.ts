@@ -11,12 +11,13 @@ export class MeasurementsService {
   constructor(private _angularStore: AngularFirestore) { }
 
   addNew(record: Record) {
-    return this._angularStore.collection("records").doc(record.date.toString()).set({
+    return this._angularStore.collection("records").doc(record.uid + record.date).set({
       customer: { ...record.customer },
       measurement: { ...record.measurement },
       billing: { ...record.billing },
       date: record.date,
-      completed: record.completed
+      completed: record.completed,
+      uid: record.uid
     });
   }
 
