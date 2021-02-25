@@ -1,12 +1,12 @@
-<div class="mat-elevation-z8 p-4">
+<div class="mat-elevation-z8 p-4" *ngIf="record != null; else loadingBlock">
     <h4>Customer Information</h4>
     <mat-divider></mat-divider>
     <mat-list>
-        <mat-list-item>Bananan</mat-list-item>
-        <mat-list-item>Bananan</mat-list-item>
-        <mat-list-item>Bananan</mat-list-item>
-        <mat-list-item>Bananan</mat-list-item>
-        <mat-list-item>Bananan</mat-list-item>
+        <mat-list-item>Name: {{record.customer.firstName+record.customer.lastName}}</mat-list-item>
         <mat-list-item>{{recordId}}</mat-list-item>
     </mat-list>
 </div>
+
+<ng-template #loadingBlock>
+    <mat-spinner></mat-spinner>
+</ng-template>

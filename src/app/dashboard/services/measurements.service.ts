@@ -24,6 +24,10 @@ export class MeasurementsService {
   getAll() {
     return this._angularStore.collection<Record>("records", ref => ref.orderBy("date")).snapshotChanges();
   }
+
+  getById(id: string) {
+    return this._angularStore.collection<Record>("records").doc(id).get();
+  }
 }
 
 

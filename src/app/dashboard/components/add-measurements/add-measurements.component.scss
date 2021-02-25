@@ -57,8 +57,8 @@
   margin-right: 0;
 }
 
-.mat-stepper-vertical {
-  margin-top: 8px;
+.mat-stepper-horizontal {
+  min-height: calc(100vh - 128px);
 }
 
 .mat-form-field {
@@ -105,4 +105,9 @@ button:not(:first-child) {
   top: 15px;
   right: 32px;
   z-index: 10;
+}
+
+.row.to-bottom {
+  position: absolute;
+  bottom: 0;
 }

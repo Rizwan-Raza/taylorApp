@@ -48,8 +48,9 @@
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let row"><button mat-icon-button [state]="row"
-          routerLink="../record/{{row.uid}}{{row.date}}">
+      <td mat-cell *matCellDef="let row"><button mat-icon-button routerLink="../record/{{row.date}}">
+      <!-- <td mat-cell *matCellDef="let row"><button mat-icon-button [routerLink]="'../record/'+row.date"> -->
+          <!-- routerLink="../record/{{row.uid}}{{row.date}}"> -->
           <mat-icon>launch</mat-icon>
         </button></td>
     </ng-container>

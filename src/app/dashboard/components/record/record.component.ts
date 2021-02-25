@@ -19,16 +19,9 @@ export class RecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.recordId = this.route.snapshot.params.id;
-    console.log(this.recordId);
-    console.log(this._measurementService.records);
-    // console.log(this._measurementService.records?.filter(x => (x.uid + x.date) == this.recordId));
-    this.route.data.subscribe((data: Record) => {
-      console.log(data);
-      if (data == null) {
-        // fetch from service
-      } else {
-        this.record = data;
-      }
+    this._measurementService.getById(this.recordId).subscribe(x => {
+      this.record = x.data();
+      console.log(this.record);
     });
   }
 
