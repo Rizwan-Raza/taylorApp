@@ -1,21 +1,26 @@
-.grid-container {
-  margin: 20px;
-}
-
-.dashboard-card {
+.mat-card {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  padding: 2rem;
+}
+.mat-grid-tile {
+  transition: all 200ms ease-in-out;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 5px 6px -3px rgb(0 0 0 / 20%), 0px 9px 12px 1px rgb(0 0 0 / 14%), 0px 3px 16px 2px rgb(0 0 0 / 12%);
+  }
 }
 
-.more-button {
-  position: absolute;
-  top: 5px;
-  right: 10px;
+::ng-deep .mat-card-header-text {
+  margin: 0 !important;
 }
 
-.dashboard-card-content {
-  text-align: center;
+.truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

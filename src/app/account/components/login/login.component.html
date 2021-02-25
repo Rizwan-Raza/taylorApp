@@ -9,11 +9,13 @@
 
         <h1 class="themed-text">Login</h1>
         <form [formGroup]="loginForm" (submit)="submit()">
-            <mat-form-field>
-                <input matInput type="text" placeholder="E-mail address" required formControlName="email">
+            <mat-form-field appearance="outline">
+                <mat-label>E-mail address</mat-label>
+                <input matInput type="text" required formControlName="email">
             </mat-form-field>
-            <mat-form-field>
-                <input matInput type="password" placeholder="Password" required formControlName="password">
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" required formControlName="password">
             </mat-form-field>
 
             <button mat-raised-button color="primary">Login</button>

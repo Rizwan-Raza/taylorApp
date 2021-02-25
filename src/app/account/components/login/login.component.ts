@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/account.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'kt-login',
   templateUrl: './login.component.html',
@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   processing: boolean = false;
   forgot: boolean = false;
   new: boolean = false;
-  dMode: boolean = false;
+  dMode: boolean = localStorage.getItem("theme") == "dark";
 
   constructor(private formBuilder: FormBuilder, private loginService: LoginService, private snackbar: MatSnackBar, private _router: Router) { }
 
@@ -27,8 +27,10 @@ export class LoginComponent implements OnInit {
   }
 
   changeTheme() {
-    document.body.classList.toggle("kt-dark-theme");
-    this.dMode != this.dMode;
+    document.body.classList.toggle("kt-dark-theme") ?
+      localStorage.setItem("theme", "dark") :
+      localStorage.setItem("theme", "light");
+    this.dMode = !this.dMode;
     console.log(document.body.classList.value);
   }
 

@@ -1,0 +1,17 @@
+<div id="settings">
+    <h2>General</h2>
+    <mat-action-list>
+        <button mat-list-item (click)="slider($event.target.classList)">
+            <span> Dark Theme </span>
+            <mat-slide-toggle align="end" #sliderToggle [checked]="darkToggle">
+            </mat-slide-toggle>
+        </button>
+    </mat-action-list>
+    <h2>Account</h2>
+    <mat-action-list>
+        <mat-list-item> Change Password </mat-list-item>
+        <mat-list-item> Change Email </mat-list-item>
+        <mat-divider></mat-divider>
+        <button mat-list-item color="warn"> Delete Account </button>
+    </mat-action-list>
+</div>

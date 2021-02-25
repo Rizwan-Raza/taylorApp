@@ -25,7 +25,7 @@
 // contrast: (500: $light-primary-text));
 $kt-primary: mat-palette($mat-purple, 800, 600, 900);
 $kt-primary-dark: mat-palette($mat-purple, 400, 200, 600);
-$kt-accent: mat-palette($mat-yellow, 400, 200, 600);
+$kt-accent: mat-palette($mat-amber);
 
 // The warn palette is optional (defaults to red).
 $kt-warn: mat-palette($mat-red);

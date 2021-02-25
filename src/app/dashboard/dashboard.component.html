@@ -1,5 +1,5 @@
 <kt-navbar [title]="title">
     <div class="container">
-        <router-outlet></router-outlet>
+        <router-outlet (activate)="getInitials($event)"></router-outlet>
     </div>
 </kt-navbar>

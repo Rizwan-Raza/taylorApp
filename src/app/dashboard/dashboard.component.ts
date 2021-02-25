@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'kt-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
   title: string = "Dashboard";
 
   constructor() { }
 
-  ngOnInit(): void {
+  getInitials(componentReference) {
+    this.title = componentReference.title;
   }
 
 }

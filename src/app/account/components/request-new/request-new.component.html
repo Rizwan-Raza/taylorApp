@@ -5,7 +5,7 @@
   <div *ngIf="!processing">
     <h1 class="themed-text">Request New User</h1>
     <form [formGroup]="requestNew" (submit)="submit()">
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <input matInput type="text" placeholder="E-mail address" required formControlName="email">
       </mat-form-field>
   

@@ -1,0 +1,11 @@
+#settings {
+    ::ng-deep {
+        .mat-list-base {
+            .mat-list-item .mat-list-item-content,
+            .mat-list-option .mat-list-item-content {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    }
+}

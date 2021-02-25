@@ -14,7 +14,11 @@ export class DashboardGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this._loginService.isAuthenticated()) {
-      console.log("Allow Dash");
+      console.log("Allow Dash: " + state.url);
+      if (state.url.endsWith("/")) {
+        this._router.navigate(['/dashboard']);
+        return false;
+      }
       return true;
     }
     console.log("Redirect Login");

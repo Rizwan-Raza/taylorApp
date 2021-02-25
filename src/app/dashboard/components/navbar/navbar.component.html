@@ -6,11 +6,11 @@
       <a mat-list-item routerLink="/dashboard" (click)="isHandset && drawer.close()">
         <mat-icon matListIcon>dashboard</mat-icon> Dashboard
       </a>
-      <a mat-list-item routerLink="/men" (click)="isHandset && drawer.close()">
+      <!-- <a mat-list-item routerLink="/men" (click)="isHandset && drawer.close()">
         <mat-icon matListIcon>receipt_long</mat-icon> For Men
-      </a>
-      <a mat-list-item routerLink="/women" (click)="isHandset && drawer.close()">
-        <mat-icon matListIcon>receipt_long</mat-icon> For Women
+      </a> -->
+      <a mat-list-item routerLink="/add-measurements" (click)="isHandset && drawer.close()">
+        <mat-icon matListIcon>receipt_long</mat-icon> Add New
       </a>
       <a mat-list-item routerLink="/view-all" (click)="isHandset && drawer.close()">
         <mat-icon matListIcon>list</mat-icon> View All
@@ -18,6 +18,11 @@
       <mat-divider></mat-divider>
       <a mat-list-item routerLink="" (click)="logout()">
         <mat-icon matListIcon>logout</mat-icon> Logout
+      </a>
+    </mat-nav-list>
+    <mat-nav-list class="push-down">
+      <a mat-list-item routerLink="/settings" (click)="isHandset && drawer.close()">
+        <mat-icon matListIcon>settings</mat-icon> Settings
       </a>
     </mat-nav-list>
   </mat-sidenav>
