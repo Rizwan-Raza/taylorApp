@@ -31,6 +31,10 @@ const routes: Routes = [
         component: AddMeasurementsComponent
       },
       {
+        path: 'add-measurements/:id',
+        component: AddMeasurementsComponent,
+      },
+      {
         path: 'view-all',
         component: ViewAllComponent
       },

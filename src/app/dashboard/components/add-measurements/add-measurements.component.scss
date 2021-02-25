@@ -59,6 +59,7 @@
 
 .mat-stepper-horizontal {
   min-height: calc(100vh - 128px);
+  position: relative;
 }
 
 .mat-form-field {
@@ -109,5 +110,7 @@ button:not(:first-child) {
 
 .row.to-bottom {
   position: absolute;
-  bottom: 0;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
 }

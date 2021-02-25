@@ -9,6 +9,8 @@ import { Measurements } from '../../models/measurements';
 import { Record } from '../../models/record';
 import { MeasurementsService } from '../../services/measurements.service';
 import { PleaseWaitComponent } from '../dialogs/please-wait/please-wait.component';
+import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'kt-add-measurements',
   templateUrl: './add-measurements.component.html',
@@ -20,6 +22,8 @@ import { PleaseWaitComponent } from '../dialogs/please-wait/please-wait.componen
 export class AddMeasurementsComponent {
 
   title: string = "Add Body Measurements";
+  record: Record;
+  toUpdate: boolean = false;
 
   customerForm: FormGroup;
   measurementForm: FormGroup;
@@ -39,7 +43,7 @@ export class AddMeasurementsComponent {
 
   @ViewChild('stepper') stepper: MatStepper;
 
-  constructor(private _formBuilder: FormBuilder, private _measurementsService: MeasurementsService, public dialog: MatDialog) { }
+  constructor(private _formBuilder: FormBuilder, private _measurementsService: MeasurementsService, public dialog: MatDialog, private route: ActivatedRoute) { }
 
   cards = [
     { title: 'Neck', control: "neck", img: "assets/men/neck.svg" },
@@ -51,49 +55,24 @@ export class AddMeasurementsComponent {
     { title: 'Arm Length', control: "armLength", img: "assets/men/arm.svg" },
     { title: 'Wrist', control: "wrist", img: "assets/men/cuff.svg" },
 
-    { title: 'Hip (for Pant)', control: "pantHip", img: "assets/men/pant_hip.svg" },
-    { title: 'Seat (for Pant)', control: "pantSeat", img: "assets/men/pant_seat.svg" },
+    { title: 'Hip (for Pant)', control: "pantsHip", img: "assets/men/pant_hip.svg" },
+    { title: 'Seat (for Pant)', control: "pantsSeat", img: "assets/men/pant_seat.svg" },
     { title: 'Inner Length', control: "inseam", img: "assets/men/innerlength_long.svg" },
     { title: 'Hip', control: "hip", img: "assets/men/realhip.svg" },
   ];
 
   ngOnInit() {
+    if(this.route.snapshot.params.id){
+      let id = this.route.snapshot.params.id;
+      this.toUpdate = true;
+      this._measurementsService.getById(id).subscribe(x => {
+        this.record = x.data();
+        this.formData(this.record);
+      });    
+    }else{
+      this.formData();
+    }
 
-    this.customerForm = this._formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null],
-      phoneNumber: [null, Validators.compose([
-        Validators.required, Validators.minLength(10), Validators.maxLength(10)])
-      ],
-      email: [null],
-      address: [null],
-      tailoring: [null, Validators.required]
-    });
-
-    this.measurementForm = this._formBuilder.group({
-      neck: [null],
-      chest: [null],
-      waist: [null],
-      shirtSeat: [null],
-      shirtLength: [null],
-      shoulderWidth: [null],
-      armLength: [null],
-      wrist: [null],
-
-      pantHip: [null],
-      pantSeat: [null],
-      inseam: [null],
-      hip: [null],
-
-      other: [null]
-    });
-
-    this.billingForm = this._formBuilder.group({
-      cost: [null, Validators.required],
-      method: [null],
-      status: [null],
-      installment: [null]
-    });
   }
 
   confirmReset() {
@@ -110,7 +89,7 @@ export class AddMeasurementsComponent {
       this.customerModel,
       this.measurementsModel,
       this.billingModel,
-      Date.now(),
+      this.record.date? this.record.date : Date.now(),
       (JSON.parse(localStorage.getItem("user")) as { uid: string, email: string }).uid
     );
 
@@ -128,4 +107,45 @@ export class AddMeasurementsComponent {
   openWaitDialog() {
     return this.dialog.open(PleaseWaitComponent, { disableClose: true, minWidth: 300, minHeight: 200 });
   }
+
+  openInfoDialog(){}
+
+  formData(record? : Record){
+    this.customerForm = this._formBuilder.group({
+      firstName: [record&& record.customer.firstName, Validators.required],
+      lastName: [record&& record.customer.lastName],
+      phoneNumber: [record&& record.customer.phoneNumber, Validators.compose([
+        Validators.required, Validators.minLength(10), Validators.maxLength(10)])
+      ],
+      email: [record&& record.customer.email],
+      address: [record&& record.customer.address],
+      tailoring: [record&& record.customer.tailoring, Validators.required]
+    });
+
+    this.measurementForm = this._formBuilder.group({
+      neck: [record&& record.measurement.neck],
+      chest: [record&& record.measurement.chest],
+      waist: [record&& record.measurement.waist],
+      shirtSeat: [record&& record.measurement.shirtSeat],
+      shirtLength: [record&& record.measurement.shirtLength],
+      shoulderWidth: [record&& record.measurement.shoulderWidth],
+      armLength: [record&& record.measurement.armLength],
+      wrist: [record&& record.measurement.wrist],
+
+      pantsHip: [record&& record.measurement.pantsHip],
+      pantsSeat: [record&& record.measurement.pantsSeat],
+      inseam: [record&& record.measurement.inseam],
+      hip: [record&& record.measurement.hip],
+
+      other: [record&& record.measurement.other]
+    });
+
+    this.billingForm = this._formBuilder.group({
+      cost: [record&& record.billing.cost, Validators.required],
+      method: [record&& record.billing.method],
+      status: [record&& record.billing.status],
+      installment: [record&& record.billing.installment]
+    });
+  }
+
 }

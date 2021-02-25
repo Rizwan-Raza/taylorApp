@@ -1,4 +1,4 @@
-<mat-horizontal-stepper [linear]="false" #stepper class="mat-elevation-z8">
+<mat-horizontal-stepper [linear]="false" #stepper class="mat-elevation-z8" *ngIf="customerForm">
   <mat-step [stepControl]="customerForm" [errorMessage]="getCustomerFormError()" #customer>
     <form [formGroup]="customerForm">
       <ng-template matStepLabel>Customer Information</ng-template>
@@ -174,12 +174,14 @@
       </div>
     </div>
   </mat-step>
+  <div class="top-right">
+    <button mat-raised-button color="primary" (click)="stepper.previous()"
+      *ngIf="stepper.selectedIndex!=0;">Back</button>
+    <button mat-raised-button (click)="stepper.next()"
+      *ngIf="stepper.selectedIndex!=3; else submitButton;">Next</button>
+    <ng-template #submitButton>
+      <button (click)="onSubmit()" mat-raised-button
+        [disabled]="!customer.interacted || customer.hasError || !measurement.interacted || measurement.hasError || !billing.interacted || billing.hasError">Submit</button>
+    </ng-template>
+  </div>
 </mat-horizontal-stepper>
-<div class="top-right">
-  <button mat-raised-button color="primary" (click)="stepper.previous()" *ngIf="stepper.selectedIndex!=0;">Back</button>
-  <button mat-raised-button (click)="stepper.next()" *ngIf="stepper.selectedIndex!=3; else submitButton;">Next</button>
-  <ng-template #submitButton>
-    <button (click)="onSubmit()" mat-raised-button
-      [disabled]="!customer.interacted || customer.hasError || !measurement.interacted || measurement.hasError || !billing.interacted || billing.hasError">Submit</button>
-  </ng-template>
-</div>
