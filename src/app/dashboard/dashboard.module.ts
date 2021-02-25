@@ -40,10 +40,11 @@ import { DashboardComponent } from './dashboard.component';
 import { PaidStatusPipe } from './pipes/paid-status.pipe';
 import { MeasurementsService } from './services/measurements.service';
 import { YesNoPipe } from './pipes/yes-no.pipe';
+import { RecordComponent } from './components/record/record.component';
 
 
 @NgModule({
-  declarations: [MensComponent, NavbarComponent, HomeComponent, DashboardComponent, ViewAllComponent, AddMeasurementsComponent, SettingsComponent, PaidStatusPipe, PleaseWaitComponent, MoreInfoComponent, ChangePasswordComponent, ChangeEmailComponent, YesNoPipe],
+  declarations: [MensComponent, NavbarComponent, HomeComponent, DashboardComponent, ViewAllComponent, AddMeasurementsComponent, SettingsComponent, PaidStatusPipe, PleaseWaitComponent, MoreInfoComponent, ChangePasswordComponent, ChangeEmailComponent, YesNoPipe, RecordComponent],
   imports: [
     CommonModule,
     MatSidenavModule,
