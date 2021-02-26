@@ -1,14 +1,15 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Billing } from '../../models/billing';
 import { Customer } from '../../models/customer';
 import { Measurements } from '../../models/measurements';
 import { Record } from '../../models/record';
 import { MeasurementsService } from '../../services/measurements.service';
+import { MoreInfoComponent } from '../dialogs/more-info/more-info.component';
 import { PleaseWaitComponent } from '../dialogs/please-wait/please-wait.component';
 
 @Component({
@@ -19,7 +20,7 @@ import { PleaseWaitComponent } from '../dialogs/please-wait/please-wait.componen
     { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true } }
   ]
 })
-export class AddMeasurementsComponent {
+export class AddMeasurementsComponent implements OnInit, AfterViewInit {
 
   title: string = "Add Body Measurements";
   record: Record;
@@ -33,17 +34,9 @@ export class AddMeasurementsComponent {
   measurementsModel: Measurements;
   billingModel: Billing;
 
-  getCustomerFormError(): string {
-    let fields: string[] = [];
-    this.customerForm.controls['firstName']?.hasError('required') && fields.push("Name");
-    this.customerForm.controls['phoneNumber']?.hasError('required') && fields.push("Phone");
-    this.customerForm.controls['tailoring']?.hasError('required') && fields.push("Tailoring");
-    return fields.length > 1 && (fields.slice(0, fields.length - 1).join(", ") + " and ") + fields.slice(-1) + (fields.length > 1 ? " are " : " is ") + "required";
-  }
-
   @ViewChild('stepper') stepper: MatStepper;
 
-  constructor(private _formBuilder: FormBuilder, private _measurementsService: MeasurementsService, public dialog: MatDialog, private route: ActivatedRoute) { }
+  constructor(private _formBuilder: FormBuilder, private _measurementsService: MeasurementsService, public dialog: MatDialog, private route: ActivatedRoute, private _router: Router) { }
 
   cards = [
     { title: 'Neck', control: "neck", img: "assets/men/neck.svg" },
@@ -63,7 +56,7 @@ export class AddMeasurementsComponent {
 
   ngOnInit() {
 
-    if(this.route.snapshot.params.id){
+    if (this.route.snapshot.params.id) {
       this.title = "Update";
       let id = this.route.snapshot.params.id;
       this.toUpdate = true;
@@ -97,12 +90,15 @@ export class AddMeasurementsComponent {
 
     this._measurementsService.addNew(recordToAdd).then(_ => {
       dialog.close();
-      alert("Record added successfully!");
+      alert("Record " + (this.toUpdate ? "updated" : "added") + " successfully!");
       this.stepper.reset();
+      if (this.toUpdate) {
+        this._router.navigate(['/record/' + recordToAdd.uid + recordToAdd.date]);
+      }
       console.log(recordToAdd.uid + recordToAdd.date);
-    }).catch(err => {
+    }).catch(_ => {
       dialog.close();
-      alert("Something went wrong. Try again. \n\nError: " + err.message);
+      alert("Something went wrong. Try again.");
     });
   }
 
@@ -110,7 +106,14 @@ export class AddMeasurementsComponent {
     return this.dialog.open(PleaseWaitComponent, { disableClose: true, minWidth: 300, minHeight: 200 });
   }
 
-  openInfoDialog() { }
+  openInfoDialog() {
+    console.log(this.stepper);
+    return this.dialog.open(MoreInfoComponent, { minWidth: 400, minHeight: 300 });
+  }
+
+  ngAfterViewInit() {
+    console.log(this.stepper);
+  }
 
   formData(record?: Record) {
     // record = record ? record : new Record(new Customer(), new Measurements(), new Billing());
@@ -153,10 +156,22 @@ export class AddMeasurementsComponent {
       installment: [record && record.billing.installment]
     });
 
-    record && (
-      this.customerForm.controls['phoneNumber'].markAsDirty({ onlySelf: true }),
-      this.billingForm.controls['cost'].markAsDirty({ onlySelf: true }),
-      this.billingForm.controls['installment'].markAsDirty({ onlySelf: true }));
+    if (this.toUpdate) {
+      // this.customerForm.markAllAsTouched();
+      // this.billingForm.markAllAsTouched();
+      this.customerForm.controls['phoneNumber'].markAsDirty({ onlySelf: true });
+      this.billingForm.controls['cost'].markAsDirty({ onlySelf: true });
+      this.billingForm.controls['installment'].markAsDirty({ onlySelf: true });
+    }
   }
+
+  getCustomerFormError(): string {
+    let fields: string[] = [];
+    this.customerForm.controls['firstName']?.hasError('required') && fields.push("Name");
+    this.customerForm.controls['phoneNumber']?.hasError('required') && fields.push("Phone");
+    this.customerForm.controls['tailoring']?.hasError('required') && fields.push("Tailoring");
+    return fields.length > 1 && (fields.slice(0, fields.length - 1).join(", ") + " and ") + fields.slice(-1) + (fields.length > 1 ? " are " : " is ") + "required";
+  }
+
 
 }

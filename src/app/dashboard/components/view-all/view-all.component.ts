@@ -103,9 +103,13 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     return filter.split('.').reduce((o, i) => o[i], obj);
   }
 
-  deleteItem(){
+  deleteItem(id:string){
     if(confirm("Are you sure You want to Delete this?")){
-      console.log("Deleted");
+      this._measurementService.delete(id).then(()=>{
+        alert("Record Deleted");
+      }).catch(err => {
+        alert("Something went wrong. Try again.");
+      });
     }
   }
 

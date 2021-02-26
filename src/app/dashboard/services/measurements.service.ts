@@ -28,6 +28,10 @@ export class MeasurementsService {
   getById(id: string) {
     return this._angularStore.collection<Record>("records").doc(id).get();
   }
+
+  delete(id:string) {
+    return this._angularStore.collection<Record>("records").doc(id).delete();
+  }
 }
 
 

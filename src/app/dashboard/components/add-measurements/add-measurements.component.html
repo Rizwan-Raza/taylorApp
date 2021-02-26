@@ -58,7 +58,7 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="measurementForm" #measurement>
+    <mat-step [stepControl]="measurementForm" #measurement [completed]="toUpdate">
       <form [formGroup]="measurementForm">
         <ng-template matStepLabel>Measurements</ng-template>
         <mat-grid-list cols="2" rowHeight="130px">
@@ -115,7 +115,7 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="billingForm" errorMessage="Cost is required" #billing>
+    <mat-step [stepControl]="billingForm" errorMessage="Cost is required" #billing [completed]="toUpdate">
       <form [formGroup]="billingForm">
         <ng-template matStepLabel>Billing Information</ng-template>
         <div class="row">
@@ -154,7 +154,7 @@
             <input matInput type="number" formControlName="installment">
           </mat-form-field>
         </div>
-        
+
         <br />
         <br />
         <div align="end" class="to-bottom">
@@ -163,26 +163,37 @@
         </div>
       </form>
     </mat-step>
-    <mat-step>
+    <mat-step [completed]="toUpdate">
       <ng-template matStepLabel>Done</ng-template>
       <div class="last-step">
-        <p
-        *ngIf="customer.interacted && !customer.hasError && measurement.interacted && !measurement.hasError && billing.interacted && !billing.hasError; else errorBlock">
-        You are now done.</p>
-      <ng-template #errorBlock>
-        <p>Please take all the steps and fill all the required fields</p>
-      </ng-template>
-    </div>
+        <ng-template *ngIf="!toUpdate; else updateMsg">
+          <p
+            *ngIf="customer.interacted && !customer.hasError && measurement.interacted && billing.interacted && !billing.hasError; else errorBlock">
+            You are now done.</p>
+        </ng-template>
+        <ng-template #updateMsg>
+          <p *ngIf="!customer.hasError && !billing.hasError; else errorBlock">
+            You are now done.</p>
+        </ng-template>
+        <ng-template #errorBlock>
+          <p>Please take all the steps and fill all the required fields</p>
+        </ng-template>
+      </div>
       <br />
       <br />
-<div class="row to-bottom">
+      <div class="row to-bottom">
         <div class="col" align="start">
           <button mat-stroked-button (click)="confirmReset() && stepper.reset()">Reset</button>
         </div>
         <div class="col" align="end">
           <button mat-stroked-button matStepperPrevious color="primary">Back</button>
-          <button mat-raised-button (click)="onSubmit()" color="primary"
-            [disabled]="!customer.interacted || customer.hasError || !measurement.interacted || measurement.hasError || !billing.interacted || billing.hasError">Submit</button>
+          <button (click)="onSubmit()" mat-raised-button color="primary"
+            [disabled]="!customer.interacted || customer.hasError || !measurement.interacted || !billing.interacted || billing.hasError"
+            *ngIf="!toUpdate; else updateButton">Submit</button>
+          <ng-template #updateButton>
+            <button (click)="onSubmit()" mat-raised-button color="primary"
+              [disabled]="customer.hasError || billing.hasError">Update</button>
+          </ng-template>
         </div>
       </div>
     </mat-step>
@@ -194,7 +205,12 @@
       *ngIf="stepper.selectedIndex!=3; else submitButton;">Next</button>
     <ng-template #submitButton>
       <button (click)="onSubmit()" mat-raised-button
-        [disabled]="!customer.interacted || customer.hasError || !measurement.interacted || measurement.hasError || !billing.interacted || billing.hasError">Submit</button>
+        [disabled]="!customer.interacted || customer.hasError || !measurement.interacted || !billing.interacted || billing.hasError"
+        *ngIf="!toUpdate; else updateButton">Submit</button>
+      <ng-template #updateButton>
+        <button (click)="onSubmit()" mat-raised-button
+          [disabled]="customer.hasError || billing.hasError">Update</button>
+      </ng-template>
     </ng-template>
   </div>
 </div>

@@ -7,8 +7,6 @@
 
 <div class="mat-elevation-z8">
   <table mat-table class="full-width-table" matSort aria-label="Elements">
-
-
     <!-- Id Column -->
     <ng-container matColumnDef="sno">
       <th mat-header-cell *matHeaderCellDef>S.No</th>
@@ -42,21 +40,30 @@
     <!-- Date Column -->
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-      <td mat-cell *matCellDef="let row">{{row.date | date }}</td>
+      <td mat-cell *matCellDef="let row">{{row.date | date }}
+      </td>
     </ng-container>
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let row">
-        <button mat-icon-button routerLink="/record/{{row.uid+row.date}}">
+        <button matTooltip="View" mat-icon-button routerLink="/record/{{row.uid+row.date}}">
           <mat-icon>launch</mat-icon>
         </button>
-        <button mat-icon-button routerLink="/add-measurements/{{row.uid+row.date}}">
+        <button matTooltip="Edit" mat-icon-button routerLink="/add-measurements/{{row.uid+row.date}}">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="deleteItem()">
+        <button matTooltip="Delete" mat-icon-button (click)="deleteItem(row.uid+row.date)">
           <mat-icon>delete</mat-icon>
+        </button>
+        <button matTooltip="Mark As Paid" mat-icon-button (click)="deleteItem(row.uid+row.date)"
+          *ngIf="row.billing.status != 'paid'">
+          <mat-icon>price_check</mat-icon>
+        </button>
+        <button matTooltip="Mark As Delivered" mat-icon-button (click)="deleteItem(row.uid+row.date)"
+          *ngIf="!row.completed">
+          <mat-icon>done_all</mat-icon>
         </button>
 
       </td>
@@ -66,18 +73,19 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     <!-- Row shown when there is no matching data.-->
-    <ng-container *ngIf="filterString; else loader">
+    <ng-container *ngIf="filterInput.value.length > 0 || filterString">
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data matching the filter
           "{{filterInput.value}}"
         </td>
       </tr>
     </ng-container>
-    <ng-template #loader>
+    <ng-template>
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-          <kt-please-wait [notitle]="true"></kt-please-wait>
+          <p class="text-center">No record found</p>
         </td>
+      </tr>
     </ng-template>
   </table>
 
