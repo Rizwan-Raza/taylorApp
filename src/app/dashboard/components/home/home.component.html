@@ -3,7 +3,7 @@
 </h1>
 <p>Here, we got some numbers</p>
 
-<mat-grid-list cols="3" rowHeight="135px" gutterSize="24px">
+<mat-grid-list cols="3" rowHeight="135px" gutterSize="24px" *ngIf="areYouReady_IfYouReady_WholeSquadReady; else loader">
   <mat-grid-tile *ngFor="let card of cards" class="mat-elevation-z3">
     <a routerLink="{{card.link}}">
       <mat-card>
@@ -21,3 +21,6 @@
     </a>
   </mat-grid-tile>
 </mat-grid-list>
+<ng-template #loader>
+  <kt-please-wait></kt-please-wait>
+</ng-template>

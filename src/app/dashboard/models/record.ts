@@ -11,7 +11,7 @@ export class Record {
         this.date = date;
         this.uid = uid;
         this.completed = false;
-    }
+    }   
     customer: Customer;
     measurement: Measurements;
     billing: Billing;

@@ -39,6 +39,10 @@
     width: fit-content !important;
   }
 
+  .mat-card-header .mat-card-title {
+    margin-bottom: 0px;
+  }
+
   .mat-card-header-text {
     margin: 0 !important;
   }
@@ -79,7 +83,7 @@ button:not(:first-child) {
   left: 8px;
   right: 8px;
   bottom: 8px;
-  border: 1px solid rgba($color: #fff, $alpha: 0.3);
+  border: 1px solid rgba($color: #000, $alpha: 0.12);
 
   &:hover .info-button {
     visibility: visible;
@@ -108,9 +112,27 @@ button:not(:first-child) {
   z-index: 10;
 }
 
-.row.to-bottom {
+// :not(.ng-animating) .to-bottom {
+//   visibility: visible;
+// }
+.to-bottom {
   position: absolute;
   left: 16px;
   right: 16px;
   bottom: 16px;
+  transition: all 200ms ease-in;
+}
+::ng-deep .ng-animating .to-bottom {
+  opacity: 0;
+}
+
+.last-step {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 262px);
+}
+
+.kt-dark-theme .mat-card {
+  border: 1px solid rgba($color: #fff, $alpha: 0.3) i !important;
 }

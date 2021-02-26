@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'kt-please-wait',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./please-wait.component.scss']
 })
 export class PleaseWaitComponent implements OnInit {
+
+  @Input('notitle') notitle = false;
 
   constructor() { }
 

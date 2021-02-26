@@ -24,6 +24,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AddMeasurementsComponent } from './components/add-measurements/add-measurements.component';
@@ -73,7 +75,8 @@ import { RecordComponent } from './components/record/record.component';
     MatStepperModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatExpansionModule,
   ],
   providers: [
     MeasurementsService,

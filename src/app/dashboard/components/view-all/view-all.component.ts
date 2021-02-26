@@ -24,7 +24,7 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
   @ViewChild('filterInput') fInput: ElementRef;
   dataSource: MatTableDataSource<Record>;
 
-  dataRecords: Record[] = [];
+  dataRecords: Map<string, Record> = new Map<string, Record>();
   filterString: string;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
@@ -34,15 +34,14 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     this.filterString = this.route.snapshot.params.filter;
     // console.log(filter);
 
-    this.dataSource = new MatTableDataSource<Record>(this.dataRecords);
+    this.dataSource = new MatTableDataSource<Record>(Array.from(this.dataRecords.values()));
 
     this._measurementService.getAll().subscribe(data => {
-      this.dataRecords = [];
+      this.dataRecords.clear();
       data.forEach(x => {
-        this.dataRecords.push(x.payload.doc.data() as Record);
+        this.dataRecords.set(x.payload.doc.id, x.payload.doc.data() as Record);
       });
-      // console.log(data);
-      this.dataSource.data = this.dataRecords;
+      this.dataSource.data = Array.from(this.dataRecords.values());
     });
 
 

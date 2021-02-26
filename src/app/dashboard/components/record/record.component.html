@@ -1,12 +1,49 @@
-<div class="mat-elevation-z8 p-4" *ngIf="record != null; else loadingBlock">
-    <h4>Customer Information</h4>
-    <mat-divider></mat-divider>
-    <mat-list>
-        <mat-list-item>Name: {{record.customer.firstName+record.customer.lastName}}</mat-list-item>
-        <mat-list-item>{{recordId}}</mat-list-item>
-    </mat-list>
-</div>
+<mat-accordion multi="true" *ngIf="record != null; else loadingBlock">
+    <mat-expansion-panel class="mat-elevation-z8" expanded>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h3>Customer Information</h3>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+            <mat-list-item><b>Name: &nbsp; </b> {{record.customer.firstName+" "+record.customer.lastName}}</mat-list-item>
+            <mat-list-item><b>Phone: &nbsp; </b> {{record.customer.phoneNumber}}</mat-list-item>
+            <mat-list-item *ngIf="record.customer.email"><b>Email: &nbsp; </b> {{record.customer.email}}</mat-list-item>
+            <mat-list-item *ngIf="record.customer.address"><b>Address: &nbsp; </b> {{record.customer.address}}</mat-list-item>
+            <mat-list-item><b>Requested: &nbsp; </b> {{record.customer.tailoring}}</mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="mat-elevation-z8" expanded>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h3>Measurements Information</h3>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+            <mat-list-item><b>Name: &nbsp; </b> {{record.customer.firstName+" "+record.customer.lastName}}</mat-list-item>
+            <mat-list-item><b>Phone: &nbsp; </b> {{record.customer.phoneNumber}}</mat-list-item>
+            <mat-list-item *ngIf="record.customer.email"><b>Email: &nbsp; </b> {{record.customer.email}}</mat-list-item>
+            <mat-list-item *ngIf="record.customer.address"><b>Address: &nbsp; </b> {{record.customer.address}}</mat-list-item>
+            <mat-list-item><b>Requested: &nbsp; </b> {{record.customer.tailoring}}</mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="mat-elevation-z8" expanded>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h3>Billing Informations</h3>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list>
+            <mat-list-item><b>Cost: &nbsp; </b> {{record.billing.cost}}</mat-list-item>
+            <mat-list-item><b>Status: &nbsp; </b> {{record.billing.status}}</mat-list-item>
+            <mat-list-item *ngIf="record.customer.status == 'install'"><b>Insatlled Amount: &nbsp; </b> {{record.billing.installment}}</mat-list-item>
+            <mat-list-item *ngIf="record.customer.method"><b>Payment Method: &nbsp; </b> {{record.billing.method}}</mat-list-item>
+        </mat-list>
+    </mat-expansion-panel>
+</mat-accordion>
 
 <ng-template #loadingBlock>
-    <mat-spinner></mat-spinner>
+    <kt-please-wait></kt-please-wait>
 </ng-template>

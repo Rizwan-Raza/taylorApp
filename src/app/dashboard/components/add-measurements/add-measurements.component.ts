@@ -3,13 +3,13 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
+import { ActivatedRoute } from '@angular/router';
 import { Billing } from '../../models/billing';
 import { Customer } from '../../models/customer';
 import { Measurements } from '../../models/measurements';
 import { Record } from '../../models/record';
 import { MeasurementsService } from '../../services/measurements.service';
 import { PleaseWaitComponent } from '../dialogs/please-wait/please-wait.component';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'kt-add-measurements',
@@ -35,9 +35,9 @@ export class AddMeasurementsComponent {
 
   getCustomerFormError(): string {
     let fields: string[] = [];
-    this.customerForm.controls['firstName'].hasError('required') && fields.push("Name");
-    this.customerForm.controls['phoneNumber'].hasError('required') && fields.push("Phone");
-    this.customerForm.controls['tailoring'].hasError('required') && fields.push("Tailoring");
+    this.customerForm.controls['firstName']?.hasError('required') && fields.push("Name");
+    this.customerForm.controls['phoneNumber']?.hasError('required') && fields.push("Phone");
+    this.customerForm.controls['tailoring']?.hasError('required') && fields.push("Tailoring");
     return fields.length > 1 && (fields.slice(0, fields.length - 1).join(", ") + " and ") + fields.slice(-1) + (fields.length > 1 ? " are " : " is ") + "required";
   }
 
@@ -62,14 +62,14 @@ export class AddMeasurementsComponent {
   ];
 
   ngOnInit() {
-    if(this.route.snapshot.params.id){
+    if (this.route.snapshot.params.id) {
       let id = this.route.snapshot.params.id;
       this.toUpdate = true;
       this._measurementsService.getById(id).subscribe(x => {
         this.record = x.data();
         this.formData(this.record);
-      });    
-    }else{
+      });
+    } else {
       this.formData();
     }
 
@@ -81,16 +81,16 @@ export class AddMeasurementsComponent {
 
   async onSubmit() {
     var dialog = this.openWaitDialog();
-    this.customerModel = new Customer(this.customerForm.value);
-    this.measurementsModel = new Measurements(this.measurementForm.value);
-    this.billingModel = new Billing(this.billingForm.value);
+    this.customerModel = this.customerForm.value;
+    this.measurementsModel = this.measurementForm.value;
+    this.billingModel = this.billingForm.value;
 
     let recordToAdd = new Record(
       this.customerModel,
       this.measurementsModel,
       this.billingModel,
-      this.record.date? this.record.date : Date.now(),
-      (JSON.parse(localStorage.getItem("user")) as { uid: string, email: string }).uid
+      this.record ? this.record.date : Date.now(),
+      this.record ? this.record.uid : (JSON.parse(localStorage.getItem("user")) as { uid: string, email: string }).uid
     );
 
     this._measurementsService.addNew(recordToAdd).then(_ => {
@@ -108,44 +108,53 @@ export class AddMeasurementsComponent {
     return this.dialog.open(PleaseWaitComponent, { disableClose: true, minWidth: 300, minHeight: 200 });
   }
 
-  openInfoDialog(){}
+  openInfoDialog() { }
 
-  formData(record? : Record){
+  formData(record?: Record) {
+    // record = record ? record : new Record(new Customer(), new Measurements(), new Billing());
+    // this.customerForm = this._formBuilder.group(Object.keys(record.customer).map(x => new FormControl(record.customer[x], (x == 'firstName' || x == 'phoneNumber' || x == 'tailoring') ? [Validators.required] : [])));
+    // this.measurementForm = this._formBuilder.group(record.measurement);
+    // this.billingForm = this._formBuilder.group(record.billing);
     this.customerForm = this._formBuilder.group({
-      firstName: [record&& record.customer.firstName, Validators.required],
-      lastName: [record&& record.customer.lastName],
-      phoneNumber: [record&& record.customer.phoneNumber, Validators.compose([
+      firstName: [record && record.customer.firstName, Validators.required],
+      lastName: [record && record.customer.lastName],
+      phoneNumber: [record && record.customer.phoneNumber, Validators.compose([
         Validators.required, Validators.minLength(10), Validators.maxLength(10)])
       ],
-      email: [record&& record.customer.email],
-      address: [record&& record.customer.address],
-      tailoring: [record&& record.customer.tailoring, Validators.required]
+      email: [record && record.customer.email],
+      address: [record && record.customer.address],
+      tailoring: [record && record.customer.tailoring, Validators.required]
     });
 
     this.measurementForm = this._formBuilder.group({
-      neck: [record&& record.measurement.neck],
-      chest: [record&& record.measurement.chest],
-      waist: [record&& record.measurement.waist],
-      shirtSeat: [record&& record.measurement.shirtSeat],
-      shirtLength: [record&& record.measurement.shirtLength],
-      shoulderWidth: [record&& record.measurement.shoulderWidth],
-      armLength: [record&& record.measurement.armLength],
-      wrist: [record&& record.measurement.wrist],
+      neck: [record && record.measurement.neck],
+      chest: [record && record.measurement.chest],
+      waist: [record && record.measurement.waist],
+      shirtSeat: [record && record.measurement.shirtSeat],
+      shirtLength: [record && record.measurement.shirtLength],
+      shoulderWidth: [record && record.measurement.shoulderWidth],
+      armLength: [record && record.measurement.armLength],
+      wrist: [record && record.measurement.wrist],
 
-      pantsHip: [record&& record.measurement.pantsHip],
-      pantsSeat: [record&& record.measurement.pantsSeat],
-      inseam: [record&& record.measurement.inseam],
-      hip: [record&& record.measurement.hip],
+      pantsHip: [record && record.measurement.pantsHip],
+      pantsSeat: [record && record.measurement.pantsSeat],
+      inseam: [record && record.measurement.inseam],
+      hip: [record && record.measurement.hip],
 
-      other: [record&& record.measurement.other]
+      other: [record && record.measurement.other]
     });
 
     this.billingForm = this._formBuilder.group({
-      cost: [record&& record.billing.cost, Validators.required],
-      method: [record&& record.billing.method],
-      status: [record&& record.billing.status],
-      installment: [record&& record.billing.installment]
+      cost: [record && record.billing.cost, Validators.required],
+      method: [record && record.billing.method],
+      status: [record && record.billing.status],
+      installment: [record && record.billing.installment]
     });
+
+    record && (
+      this.customerForm.controls['phoneNumber'].markAsDirty({ onlySelf: true }),
+      this.billingForm.controls['cost'].markAsDirty({ onlySelf: true }),
+      this.billingForm.controls['installment'].markAsDirty({ onlySelf: true }));
   }
 
 }

@@ -10,7 +10,7 @@ import { MeasurementsService } from '../../services/measurements.service';
 export class HomeComponent implements OnInit {
 
   title: string = "Dashboard";
-  dataRecords: Record[];
+  areYouReady_IfYouReady_WholeSquadReady: boolean = false;
 
   unpaid_inc: number = 0;
   unpaid_com: number = 0;
@@ -29,6 +29,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this._measurementsService.getAll().subscribe(data => {
+      if (this.areYouReady_IfYouReady_WholeSquadReady)
+        return;
+      else
+        this.areYouReady_IfYouReady_WholeSquadReady = true;
       data.forEach(x => {
         let r = x.payload.doc.data() as Record;
         this.total++;
