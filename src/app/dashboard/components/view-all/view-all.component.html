@@ -55,6 +55,10 @@
         <button mat-icon-button routerLink="../add-measurements/{{row.uid+row.date}}">
           <mat-icon>edit</mat-icon>
         </button>
+        <button mat-icon-button (click)="deleteItem()">
+          <mat-icon>delete</mat-icon>
+        </button>
+
       </td>
     </ng-container>
 

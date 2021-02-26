@@ -62,7 +62,9 @@ export class AddMeasurementsComponent {
   ];
 
   ngOnInit() {
+
     if(this.route.snapshot.params.id){
+      this.title = "Update";
       let id = this.route.snapshot.params.id;
       this.toUpdate = true;
       this._measurementsService.getById(id).subscribe(x => {

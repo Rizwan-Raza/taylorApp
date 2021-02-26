@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Record } from '../../models/record';
 import { MeasurementsService } from '../../services/measurements.service';
@@ -15,7 +16,7 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
 
   title: string = "View All Records";
 
-  constructor(private _measurementService: MeasurementsService, private route: ActivatedRoute) { }
+  constructor(private _measurementService: MeasurementsService, private route: ActivatedRoute, private dialog: MatDialog) { }
 
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -102,6 +103,13 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
   getValue(obj, filter) {
     return filter.split('.').reduce((o, i) => o[i], obj);
   }
+
+  deleteItem(){
+    if(confirm("Are you sure You want to Delete this?")){
+      console.log("Deleted");
+    }
+  }
+
 }
 
 

@@ -15,6 +15,7 @@ import { AccountModule } from './account/account.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { ViewAllComponent } from './dashboard/components/view-all/view-all.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { SharedModule } from './shared/shared.module';
 
@@ -51,6 +52,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
