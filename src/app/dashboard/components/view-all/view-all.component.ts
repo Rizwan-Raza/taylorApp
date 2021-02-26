@@ -113,6 +113,20 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     }
   }
 
+  markAsPaid(id: string){
+    this._measurementService.markRecordAsPaid(id).then(_ => {console.log("Marked Paid");})
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
+  markAsCompleted(id: string){
+    this._measurementService.markRecordAsCompleted(id).then(_ => {console.log("Marked Completed");})
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
 }
 
 

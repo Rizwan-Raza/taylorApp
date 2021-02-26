@@ -29,8 +29,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AddMeasurementsComponent } from './components/add-measurements/add-measurements.component';
-import { ChangeEmailComponent } from './components/dialogs/change-email/change-email.component';
-import { ChangePasswordComponent } from './components/dialogs/change-password/change-password.component';
 import { MoreInfoComponent } from './components/dialogs/more-info/more-info.component';
 import { PleaseWaitComponent } from './components/dialogs/please-wait/please-wait.component';
 import { HomeComponent } from './components/home/home.component';
@@ -47,7 +45,20 @@ import { MeasurementsService } from './services/measurements.service';
 
 
 @NgModule({
-  declarations: [MensComponent, NavbarComponent, HomeComponent, DashboardComponent, ViewAllComponent, AddMeasurementsComponent, SettingsComponent, PaidStatusPipe, PleaseWaitComponent, MoreInfoComponent, ChangePasswordComponent, ChangeEmailComponent, YesNoPipe, RecordComponent],
+  declarations: [
+    MensComponent,
+    NavbarComponent,
+    HomeComponent,
+    DashboardComponent,
+    ViewAllComponent,
+    AddMeasurementsComponent,
+    SettingsComponent,
+    PaidStatusPipe,
+    PleaseWaitComponent,
+    MoreInfoComponent,
+    YesNoPipe,
+    RecordComponent
+  ],
   imports: [
     CommonModule,
     MatSidenavModule,

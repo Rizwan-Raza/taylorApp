@@ -13,9 +13,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { RequestNewComponent } from './components/request-new/request-new.component';
+import { UpdatePasswordComponent } from './components/update-password/update-password.component';
+import { UpdateEmailComponent } from './components/update-email/update-email.component';
 
 @NgModule({
-  declarations: [LoginComponent, ForgotPasswordComponent, RequestNewComponent],
+  declarations: [LoginComponent, ForgotPasswordComponent, RequestNewComponent, UpdatePasswordComponent, UpdateEmailComponent],
   imports: [
     CommonModule,
     FormsModule,

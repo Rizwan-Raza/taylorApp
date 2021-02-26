@@ -20,7 +20,7 @@ import { PleaseWaitComponent } from '../dialogs/please-wait/please-wait.componen
     { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true } }
   ]
 })
-export class AddMeasurementsComponent implements OnInit, AfterViewInit {
+export class AddMeasurementsComponent implements OnInit {
 
   title: string = "Add Body Measurements";
   record: Record;
@@ -107,19 +107,11 @@ export class AddMeasurementsComponent implements OnInit, AfterViewInit {
   }
 
   openInfoDialog() {
-    console.log(this.stepper);
     return this.dialog.open(MoreInfoComponent, { minWidth: 400, minHeight: 300 });
   }
 
-  ngAfterViewInit() {
-    console.log(this.stepper);
-  }
 
   formData(record?: Record) {
-    // record = record ? record : new Record(new Customer(), new Measurements(), new Billing());
-    // this.customerForm = this._formBuilder.group(Object.keys(record.customer).map(x => new FormControl(record.customer[x], (x == 'firstName' || x == 'phoneNumber' || x == 'tailoring') ? [Validators.required] : [])));
-    // this.measurementForm = this._formBuilder.group(record.measurement);
-    // this.billingForm = this._formBuilder.group(record.billing);
     this.customerForm = this._formBuilder.group({
       firstName: [record && record.customer.firstName, Validators.required],
       lastName: [record && record.customer.lastName],
@@ -157,8 +149,6 @@ export class AddMeasurementsComponent implements OnInit, AfterViewInit {
     });
 
     if (this.toUpdate) {
-      // this.customerForm.markAllAsTouched();
-      // this.billingForm.markAllAsTouched();
       this.customerForm.controls['phoneNumber'].markAsDirty({ onlySelf: true });
       this.billingForm.controls['cost'].markAsDirty({ onlySelf: true });
       this.billingForm.controls['installment'].markAsDirty({ onlySelf: true });

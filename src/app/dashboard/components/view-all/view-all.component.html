@@ -57,11 +57,11 @@
         <button matTooltip="Delete" mat-icon-button (click)="deleteItem(row.uid+row.date)">
           <mat-icon>delete</mat-icon>
         </button>
-        <button matTooltip="Mark As Paid" mat-icon-button (click)="deleteItem(row.uid+row.date)"
+        <button matTooltip="Mark As Paid" mat-icon-button (click)="markAsPaid(row.uid+row.date)"
           *ngIf="row.billing.status != 'paid'">
           <mat-icon>price_check</mat-icon>
         </button>
-        <button matTooltip="Mark As Delivered" mat-icon-button (click)="deleteItem(row.uid+row.date)"
+        <button matTooltip="Mark As Delivered" mat-icon-button (click)="markAsCompleted(row.uid+row.date)"
           *ngIf="!row.completed">
           <mat-icon>done_all</mat-icon>
         </button>

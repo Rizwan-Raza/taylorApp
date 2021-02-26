@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Billing } from '../models/billing';
 import { Record } from '../models/record';
 
 @Injectable({
@@ -32,6 +33,15 @@ export class MeasurementsService {
   delete(id:string) {
     return this._angularStore.collection<Record>("records").doc(id).delete();
   }
+
+  markRecordAsPaid(id: string){
+    return this._angularStore.collection<Record>("records").doc(id).update({billing: {status: 'paid'} as Billing});
+  }
+
+  markRecordAsCompleted(id: string){
+    return this._angularStore.collection<Record>("records").doc(id).update({completed: true});
+  }
+
 }
 
 

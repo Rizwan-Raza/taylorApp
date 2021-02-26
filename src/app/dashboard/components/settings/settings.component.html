@@ -9,9 +9,9 @@
     </mat-action-list>
     <h2>Account</h2>
     <mat-action-list>
-        <mat-list-item> Change Password </mat-list-item>
-        <mat-list-item> Change Email </mat-list-item>
+        <mat-list-item (click)= "changePassword()"> Change Password </mat-list-item>
+        <mat-list-item (click)="changeEmail()"> Change Email </mat-list-item>
         <mat-divider></mat-divider>
-        <button mat-list-item color="warn"> Delete Account </button>
+        <button mat-list-item color="warn" (click)="deleteAccount()"> Delete Account </button>
     </mat-action-list>
 </div>
