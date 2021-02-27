@@ -1,4 +1,10 @@
-<mat-accordion multi="true" *ngIf="record != null; else loadingBlock">
+<div align='right'>
+    <button mat-raised-button color="primary" (click)="onPrint()">
+        <mat-icon>print</mat-icon> Print
+    </button>
+</div>
+
+<mat-accordion id="toPrint" multi="true" *ngIf="record != null; else loadingBlock">
     <mat-expansion-panel class="mat-elevation-z8" expanded>
         <mat-expansion-panel-header>
             <mat-panel-title>

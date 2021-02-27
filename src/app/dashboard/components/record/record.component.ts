@@ -1,3 +1,4 @@
+import { style } from '@angular/animations';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -24,6 +25,16 @@ export class RecordComponent implements OnInit {
       this.record = x.data();
       console.log(this.record);
     });
+  }
+
+  onPrint() {
+    const printContent = document.getElementById("toPrint");
+    const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+    WindowPrt.focus();
+    WindowPrt.document.write(printContent.innerHTML);
+    WindowPrt.document.close();
+    WindowPrt.print();
+    WindowPrt.close();
   }
 
 }
