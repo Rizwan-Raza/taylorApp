@@ -38,9 +38,11 @@ import { RecordComponent } from './components/record/record.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ViewAllComponent } from './components/view-all/view-all.component';
 import { DashboardComponent } from './dashboard.component';
-import { PaidStatusPipe } from './pipes/paid-status.pipe';
+import { IsPaidPipe } from './pipes/is-paid.pipe';
+import { PaymentStatusPipe } from './pipes/payment-status.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { MeasurementsService } from './services/measurements.service';
+import { PaymentMethodPipe } from './pipes/payment-method.pipe';
 
 
 
@@ -53,11 +55,13 @@ import { MeasurementsService } from './services/measurements.service';
     ViewAllComponent,
     AddMeasurementsComponent,
     SettingsComponent,
-    PaidStatusPipe,
+    IsPaidPipe,
     PleaseWaitComponent,
     MoreInfoComponent,
     YesNoPipe,
-    RecordComponent
+    RecordComponent,
+    PaymentStatusPipe,
+    PaymentMethodPipe
   ],
   imports: [
     CommonModule,

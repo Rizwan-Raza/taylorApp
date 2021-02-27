@@ -1,18 +1,21 @@
-<form [formGroup]="updateEmail">
-    <mat-form-field appearance="outline">
-        <mat-label>Current Email</mat-label>
-        <input matInput type="email" required formControlName="currentEmail">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>New Email</mat-label>
-        <input matInput type="email" required formControlName="newEmail">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>Current Password</mat-label>
-        <input matInput type="password" required formControlName="password">
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" mat-dialog-close (click)="close()" >Cancel</button>
-    <button mat-raised-button color="primary" (click)="submit()">Update</button>
-</form>
-
+<h2 mat-dialog-title>Change email address</h2>
+<mat-dialog-content>
+    <form [formGroup]="updateEmail">
+        <mat-form-field appearance="outline">
+            <mat-label>Current email</mat-label>
+            <input matInput type="email" required formControlName="currentEmail">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Current password</mat-label>
+            <input matInput type="password" required formControlName="password">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>New email</mat-label>
+            <input matInput type="email" required formControlName="newEmail">
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()">Change</button>
+</mat-dialog-actions>

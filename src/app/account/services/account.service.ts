@@ -20,7 +20,6 @@ export class LoginService {
       }
     });
     this.request = this.db.collection("requests");
-
   }
 
   isAuthenticated() {
@@ -51,13 +50,13 @@ export class LoginService {
     return this.db.collection('users').doc(JSON.parse(localStorage.getItem("user")).uid).get;
   }
 
-  updatePassword(currentPassword: string, newPassword: string){
+  updatePassword(currentPassword: string, newPassword: string) {
     this.afAuth.currentUser.then(res => {
       let email = JSON.parse(localStorage.getItem('user')).email;
       var cred = firebase.default.auth.EmailAuthProvider.credential(email, currentPassword);
       res.reauthenticateWithCredential(cred).then(_ => {
         res.updatePassword(newPassword).then(_ => {
-          console.log("Password changed!!!!");
+          console.log("Password changed successfully.");
         });
       }).catch(err => {
         alert(err.message);
@@ -66,17 +65,16 @@ export class LoginService {
     });
   }
 
-  updateEmail(currentEmail: string, newEmail: string, password: string){
+  updateEmail(currentEmail: string, newEmail: string, password: string) {
     this.afAuth.currentUser.then(res => {
       var cred = firebase.default.auth.EmailAuthProvider.credential(currentEmail, password);
       res.reauthenticateWithCredential(cred).then(_ => {
         res.updateEmail(newEmail).then(_ => {
-          console.log("Email changed!!!!");
+          console.log("Email changed successfully.");
         });
       }).catch(err => {
         alert(err.message);
         console.log(err);
-        
       });
     });
   }

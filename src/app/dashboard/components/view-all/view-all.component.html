@@ -25,10 +25,22 @@
       <td mat-cell *matCellDef="let row">{{row.customer.phoneNumber}}</td>
     </ng-container>
 
+    <!-- Tailoring Column -->
+    <ng-container matColumnDef="customer.tailoring">
+      <th mat-header-cell *matHeaderCellDef>Tailoring</th>
+      <td mat-cell *matCellDef="let row">{{row.customer.tailoring}}</td>
+    </ng-container>
+
+    <!-- Cost Column -->
+    <ng-container matColumnDef="billing.cost">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Cost</th>
+      <td mat-cell *matCellDef="let row">{{row.billing.cost | currency:'INR'}}</td>
+    </ng-container>
+
     <!-- Paid Column -->
     <ng-container matColumnDef="billing.status">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Paid</th>
-      <td mat-cell *matCellDef="let row">{{row.billing.status | paidStatus}}</td>
+      <td mat-cell *matCellDef="let row">{{row.billing.status | isPaid | yesNo}}</td>
     </ng-container>
 
     <!-- Delivered Column -->
@@ -48,7 +60,7 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let row">
-        <button matTooltip="View" mat-icon-button routerLink="/record/{{row.uid+row.date}}">
+        <button matTooltip="View" mat-icon-button [routerLink]="'/record/'+row.uid+row.date">
           <mat-icon>launch</mat-icon>
         </button>
         <button matTooltip="Edit" mat-icon-button routerLink="/add-measurements/{{row.uid+row.date}}">
@@ -73,20 +85,27 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
     <!-- Row shown when there is no matching data.-->
-    <ng-container *ngIf="filterInput.value.length > 0 || filterString">
+    <ng-container *ngIf="(filterInput.value.length > 0 || filterString)">
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data matching the filter
           "{{filterInput.value}}"
         </td>
       </tr>
     </ng-container>
-    <ng-template>
+    <ng-container *ngIf="!showLoader">
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
           <p class="text-center">No record found</p>
         </td>
       </tr>
-    </ng-template>
+    </ng-container>
+    <ng-container *ngIf="showLoader">
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          <kt-please-wait [notitle]="true"></kt-please-wait>
+        </td>
+      </tr>
+    </ng-container>
   </table>
 
   <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="50"

@@ -46,7 +46,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Tailoring</mat-label>
           <input matInput formControlName="tailoring">
-          <mat-hint>Customer requested to tailor what?</mat-hint>
+          <mat-hint>What customer requested to tailor?</mat-hint>
           <mat-error *ngIf="customerForm.controls['tailoring'].hasError('required')">
             Tailoring info is <strong>required</strong>
           </mat-error>
@@ -58,7 +58,7 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="measurementForm" #measurement [completed]="toUpdate">
+    <mat-step [stepControl]="measurementForm" #measurement [completed]="checkCompleted(measurement)">
       <form [formGroup]="measurementForm">
         <ng-template matStepLabel>Measurements</ng-template>
         <mat-grid-list cols="2" rowHeight="130px">
@@ -66,13 +66,14 @@
             <mat-card class="mat-elevation-z0">
               <div class="row">
                 <div class="col">
-                  <img src="{{card.img}}" width="80px" />
+                  <img src="{{card.img}}" height="80px" />
                 </div>
                 <div class="col">
                   <mat-card-header>
                     <mat-card-title>
                       {{card.title}}
-                      <button mat-icon-button class="info-button" (click)="openInfoDialog()">
+                      <button mat-icon-button class="info-button"
+                        (click)="openInfoDialog(card.title,card.dImg, card.desc)">
                         <mat-icon>help_outline</mat-icon>
                       </button>
                     </mat-card-title>
@@ -115,7 +116,8 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="billingForm" errorMessage="Cost is required" #billing [completed]="toUpdate">
+    <mat-step [stepControl]="billingForm" errorMessage="Cost is required" #billing
+      [completed]="checkCompleted(billing)">
       <form [formGroup]="billingForm">
         <ng-template matStepLabel>Billing Information</ng-template>
         <div class="row">
@@ -132,7 +134,7 @@
           <div class="col">
             <mat-form-field appearance="outline">
               <mat-label>Payment Method</mat-label>
-              <mat-select formControlName="method">
+              <mat-select formControlName="method" [value]="'cash'">
                 <mat-option value="cash">Cash</mat-option>
                 <mat-option value="upi">UPI</mat-option>
                 <mat-option value="other">Other</mat-option>
@@ -144,10 +146,12 @@
         <div>
           <label>Status: </label>
           <mat-radio-group formControlName="status">
-            <mat-radio-button value="pod" selected>Pay On Delivery</mat-radio-button>
+            <mat-radio-button value="pod">Pay On Delivery</mat-radio-button>
             <mat-radio-button value="paid">Paid</mat-radio-button>
             <mat-radio-button value="install">Installment</mat-radio-button>
           </mat-radio-group>
+          <br />
+          <br />
           <mat-form-field appearance="outline" *ngIf="billingForm.controls['status'].value == 'install'">
             <mat-label>Installed Cost</mat-label>
             <span matPrefix>₹ &nbsp; </span>
@@ -163,21 +167,25 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [completed]="toUpdate">
+    <mat-step>
       <ng-template matStepLabel>Done</ng-template>
       <div class="last-step">
-        <ng-template *ngIf="!toUpdate; else updateMsg">
+
+        <ng-container *ngIf="!toUpdate; else updateMsg">
           <p
             *ngIf="customer.interacted && !customer.hasError && measurement.interacted && billing.interacted && !billing.hasError; else errorBlock">
             You are now done.</p>
-        </ng-template>
+        </ng-container>
+
         <ng-template #updateMsg>
           <p *ngIf="!customer.hasError && !billing.hasError; else errorBlock">
             You are now done.</p>
         </ng-template>
+
         <ng-template #errorBlock>
           <p>Please take all the steps and fill all the required fields</p>
         </ng-template>
+
       </div>
       <br />
       <br />

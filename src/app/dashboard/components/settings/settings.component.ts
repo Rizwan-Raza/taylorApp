@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatDialog } from '@angular/material/dialog';
-
-import { UpdatePasswordComponent } from '../../../account/components/update-password/update-password.component';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { UpdateEmailComponent } from '../../../account/components/update-email/update-email.component';
+import { UpdatePasswordComponent } from '../../../account/components/update-password/update-password.component';
+
 
 @Component({
   selector: 'kt-settings',
@@ -28,23 +28,25 @@ export class SettingsComponent implements OnInit {
       localStorage.setItem("theme", "light");
   }
 
-  changePassword(){
-    this.dialog.open(UpdatePasswordComponent,{
+  changePassword() {
+    this.dialog.open(UpdatePasswordComponent, {
       autoFocus: true,
       disableClose: true,
+      maxWidth: 600
     });
   }
 
-  changeEmail(){
-    this.dialog.open(UpdateEmailComponent ,{
+  changeEmail() {
+    this.dialog.open(UpdateEmailComponent, {
       autoFocus: true,
       disableClose: true,
+      maxWidth: 600
     });
   }
 
-  deleteAccount(){
-    if(confirm("Are you sure? you want to delete your account!!")){
-      alert("This service is not available");
+  deleteAccount() {
+    if (confirm("Are you sure you want to delete your account?")) {
+      alert("This service is not available yet.");
     }
   }
 

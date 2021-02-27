@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Record } from '../../models/record';
 import { MeasurementsService } from '../../services/measurements.service';
+import { RecordComponent } from '../record/record.component';
 
 @Component({
   selector: 'view-all',
@@ -25,11 +26,22 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
   @ViewChild('filterInput') fInput: ElementRef;
   dataSource: MatTableDataSource<Record>;
 
+  showLoader: boolean = true;
   dataRecords: Map<string, Record> = new Map<string, Record>();
   filterString: string;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['sno', 'customer.firstName', 'customer.phoneNumer', 'billing.status', 'completed', 'date', 'actions'];
+  displayedColumns = [
+    'sno',
+    'customer.firstName',
+    'customer.phoneNumer',
+    'customer.tailoring',
+    'billing.cost',
+    'billing.status',
+    'completed',
+    'date',
+    'actions'
+  ];
 
   ngOnInit() {
     this.filterString = this.route.snapshot.params.filter;
@@ -42,6 +54,7 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
       data.forEach(x => {
         this.dataRecords.set(x.payload.doc.id, x.payload.doc.data() as Record);
       });
+      this.showLoader = false;
       this.dataSource.data = Array.from(this.dataRecords.values());
     });
 
@@ -103,9 +116,9 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     return filter.split('.').reduce((o, i) => o[i], obj);
   }
 
-  deleteItem(id:string){
-    if(confirm("Are you sure You want to Delete this?")){
-      this._measurementService.delete(id).then(()=>{
+  deleteItem(id: string) {
+    if (confirm("Are you sure You want to Delete this?")) {
+      this._measurementService.delete(id).then(() => {
         alert("Record Deleted");
       }).catch(err => {
         alert("Something went wrong. Try again.");
@@ -113,24 +126,27 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     }
   }
 
-  markAsPaid(id: string){
-    this._measurementService.markRecordAsPaid(id).then(_ => {console.log("Marked Paid");})
-    .catch(err => {
-      console.log(err);
-    });
+  markAsPaid(id: string) {
+    this._measurementService.markRecordAsPaid(id).then(_ => { console.log("Marked Paid"); })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  markAsCompleted(id: string){
-    this._measurementService.markRecordAsCompleted(id).then(_ => {console.log("Marked Completed");})
-    .catch(err => {
-      console.log(err);
-    });
+  markAsCompleted(id: string) {
+    this._measurementService.markRecordAsCompleted(id).then(_ => { console.log("Marked Completed"); })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-}
+  openRecord(id: string) {
+    this.dialog.open(RecordComponent,
+      {
+        minWidth: 800,
+        maxHeight: 600,
+        data: { id: id }
+      });
+  }
 
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a: string | number, b: string | number, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
