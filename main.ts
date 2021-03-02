@@ -16,6 +16,7 @@ function createWindow(): BrowserWindow {
     x: 0,
     y: 0,
     center: true,
+    
     icon: "src/assets/logo.png",
     width: size.width,
     height: size.height,

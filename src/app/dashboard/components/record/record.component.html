@@ -1,101 +1,132 @@
-<div align='right'>
-    <button mat-raised-button color="primary" (click)="onPrint()">
-        <mat-icon>print</mat-icon> Print
-    </button>
+<div [ngClass]="{'p-4': !nopadding, 'prt-sc': true}">
+    <div class="not-print" align='right' *ngIf="!nopadding">
+        <button mat-raised-button color="primary" (click)="onPrint()">
+            <mat-icon>print</mat-icon> Print
+        </button>
+        <br />
+        <br />
+    </div>
+    <div class="print brand-label">
+        <mat-card class="mat-elevation-z8">
+            <mat-card-header>
+                <mat-card-title>Khan Tailors</mat-card-title>
+                <mat-card-subtitle>Chowk - Sultanpur</mat-card-subtitle>
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <div class="float-phone">
+                <button mat-flat-button>
+                    <mat-icon>phone</mat-icon> +91 9415472879
+                </button>
+            </div>
+            <mat-card-content>
+                <div style="float: right; text-align:right;"><b>Date:
+                        &nbsp; </b>
+                    {{currentDate ? (currentDate | date) : 'Loading ...'}}</div>
+                <div style="float: left;"><b>Record Date: &nbsp; </b>
+                    {{record ? (record.date | date) : 'Loading ...'}}
+                </div>
+                <div style="clear: both;"><b>Work Status: &nbsp; </b>
+                    {{record ? (record.completed ?
+                    'Completed' : 'In Progress') : 'Loading ...'}}</div>
+            </mat-card-content>
+        </mat-card>
+        <br />
+    </div>
+
+    <mat-accordion class="print" multi="true" *ngIf="record; else loadingBlock">
+        <mat-expansion-panel class="mat-elevation-z8" expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Customer Information</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+                <mat-list-item><b>Name: &nbsp; </b> {{record.customer.firstName+"
+                    "+(record.customer.lastName?record.customer.lastName:'')}}
+                </mat-list-item>
+                <mat-list-item><b>Phone: &nbsp; </b> {{record.customer.phoneNumber}}</mat-list-item>
+                <mat-list-item *ngIf="record.customer.email"><b>Email: &nbsp; </b> {{record.customer.email}}
+                </mat-list-item>
+                <mat-list-item *ngIf="record.customer.address"><b>Address: &nbsp; </b> {{record.customer.address}}
+                </mat-list-item>
+                <mat-list-item><b>Tailoring: &nbsp; </b> {{record.customer.tailoring}}</mat-list-item>
+            </mat-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-elevation-z8" expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Measurements Information</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list class="measurement">
+                <mat-list-item *ngIf="record.measurement.neck"><b>Neck: &nbsp; </b> {{record.measurement.neck}}
+                    inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.chest"><b>Chest: &nbsp; </b>
+                    {{record.measurement.chest}}
+                    inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.waist"><b>Waist: &nbsp; </b>
+                    {{record.measurement.waist}}
+                    inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.shirtSeat"><b>Seat (for Shirt): &nbsp; </b>
+                    {{record.measurement.shirtSeat}} inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.shirtLength"><b>Shirt length: &nbsp; </b>
+                    {{record.measurement.shirtLength}} inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.shoulderWidth"><b>Shoulder width: &nbsp; </b>
+                    {{record.measurement.shoulderWidth}} inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.armLength"><b>Arm length: &nbsp; </b>
+                    {{record.measurement.armLength}} inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.wrist"><b>Wrist: &nbsp; </b>
+                    {{record.measurement.wrist}}
+                    inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.pantsHip"><b>Hip (for Pant): &nbsp; </b>
+                    {{record.measurement.pantsHip}} inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.pantsSeat"><b>Seat (for Pant): &nbsp; </b>
+                    {{record.measurement.pantsSeat}} inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.inseam"><b>Inner length: &nbsp; </b>
+                    {{record.measurement.inseam}} inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.hip"><b>Actual hip: &nbsp; </b>
+                    {{record.measurement.hip}}
+                    inches
+                </mat-list-item>
+                <mat-list-item *ngIf="record.measurement.other"><b>Others: &nbsp; </b>
+                    {{record.measurement.other}}
+                </mat-list-item>
+
+
+            </mat-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel class="mat-elevation-z8" expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Billing Information</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+                <mat-list-item><b>Cost: &nbsp; </b> {{record.billing.cost | currency:'INR'}}</mat-list-item>
+                <mat-list-item><b>Status: &nbsp; </b> {{record.billing.status | paymentStatus}}</mat-list-item>
+                <mat-list-item *ngIf="record.billing.status == 'install'"><b>Installed Amount: &nbsp; </b>
+                    {{record.billing.installment | currency:'INR'}}</mat-list-item>
+                <mat-list-item *ngIf="record.billing.method"><b>Payment Method: &nbsp; </b> {{record.billing.method |
+                    paymentMethod}}
+                </mat-list-item>
+            </mat-list>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <ng-template #loadingBlock>
+        <kt-please-wait></kt-please-wait>
+    </ng-template>
 </div>
-
-<mat-accordion id="toPrint" multi="true" *ngIf="record != null; else loadingBlock">
-    <mat-expansion-panel class="mat-elevation-z8" expanded>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                <h3>Customer Information</h3>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-list>
-            <mat-list-item><b>Name: &nbsp; </b> {{record.customer.firstName+" "+record.customer.lastName}}
-            </mat-list-item>
-            <mat-list-item><b>Phone: &nbsp; </b> {{record.customer.phoneNumber}}</mat-list-item>
-            <mat-list-item *ngIf="record.customer.email"><b>Email: &nbsp; </b> {{record.customer.email}}</mat-list-item>
-            <mat-list-item *ngIf="record.customer.address"><b>Address: &nbsp; </b> {{record.customer.address}}
-            </mat-list-item>
-            <mat-list-item><b>Tailoring: &nbsp; </b> {{record.customer.tailoring}}</mat-list-item>
-        </mat-list>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel class="mat-elevation-z8" expanded>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                <h3>Measurements Information</h3>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div class="row">
-            <div class="col">
-                <mat-list>
-                    <mat-list-item *ngIf="record.measurement.neck"><b>Neck: &nbsp; </b> {{record.measurement.neck}}
-                        inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.waist"><b>Waist: &nbsp; </b> {{record.measurement.waist}}
-                        inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.shirtLength"><b>Shirt length: &nbsp; </b>
-                        {{record.measurement.shirtLength}} inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.armLength"><b>Arm length: &nbsp; </b>
-                        {{record.measurement.armLength}} inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.pantsHip"><b>Hip (for Pant): &nbsp; </b>
-                        {{record.measurement.pantsHip}} inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.inseam"><b>Inner length: &nbsp; </b>
-                        {{record.measurement.inseam}} inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.other"><b>Others: &nbsp; </b> {{record.measurement.other}}
-                    </mat-list-item>
-                </mat-list>
-            </div>
-            <div class="col">
-                <mat-list>
-                    <mat-list-item *ngIf="record.measurement.chest"><b>Chest: &nbsp; </b> {{record.measurement.chest}}
-                        inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.shirtSeat"><b>Seat (for Shirt): &nbsp; </b>
-                        {{record.measurement.shirtSeat}} inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.shoulderWidth"><b>Shoulder width: &nbsp; </b>
-                        {{record.measurement.shoulderWidth}} inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.wrist"><b>Wrist: &nbsp; </b> {{record.measurement.wrist}}
-                        inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.pantsSeat"><b>Seat (for Pant): &nbsp; </b>
-                        {{record.measurement.pantsSeat}} inches
-                    </mat-list-item>
-                    <mat-list-item *ngIf="record.measurement.hip"><b>Actual hip: &nbsp; </b> {{record.measurement.hip}}
-                        inches
-                    </mat-list-item>
-                </mat-list>
-            </div>
-        </div>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel class="mat-elevation-z8" expanded>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                <h3>Billing Informations</h3>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-list>
-            <mat-list-item><b>Cost: &nbsp; </b> {{record.billing.cost | currency:'INR'}}</mat-list-item>
-            <mat-list-item><b>Status: &nbsp; </b> {{record.billing.status | paymentStatus}}</mat-list-item>
-            <mat-list-item *ngIf="record.billing.status == 'install'"><b>Installed Amount: &nbsp; </b>
-                {{record.billing.installment | currency:'INR'}}</mat-list-item>
-            <mat-list-item *ngIf="record.billing.method"><b>Payment Method: &nbsp; </b> {{record.billing.method |
-                paymentMethod}}
-            </mat-list-item>
-        </mat-list>
-    </mat-expansion-panel>
-</mat-accordion>
-
-<ng-template #loadingBlock>
-    <kt-please-wait></kt-please-wait>
-</ng-template>

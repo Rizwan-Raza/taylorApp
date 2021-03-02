@@ -38,11 +38,13 @@ import { RecordComponent } from './components/record/record.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ViewAllComponent } from './components/view-all/view-all.component';
 import { DashboardComponent } from './dashboard.component';
+import { CheckUncheckPipe } from './pipes/check-uncheck.pipe';
+import { GreenRedPipe } from './pipes/green-red.pipe';
 import { IsPaidPipe } from './pipes/is-paid.pipe';
+import { PaymentMethodPipe } from './pipes/payment-method.pipe';
 import { PaymentStatusPipe } from './pipes/payment-status.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { MeasurementsService } from './services/measurements.service';
-import { PaymentMethodPipe } from './pipes/payment-method.pipe';
 
 
 
@@ -61,7 +63,9 @@ import { PaymentMethodPipe } from './pipes/payment-method.pipe';
     YesNoPipe,
     RecordComponent,
     PaymentStatusPipe,
-    PaymentMethodPipe
+    PaymentMethodPipe,
+    CheckUncheckPipe,
+    GreenRedPipe
   ],
   imports: [
     CommonModule,

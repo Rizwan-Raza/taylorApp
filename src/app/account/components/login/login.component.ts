@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("theme", "dark") :
       localStorage.setItem("theme", "light");
     this.dMode = !this.dMode;
-    console.log(document.body.classList.value);
   }
 
   toggleSettings(elem) {

@@ -15,10 +15,8 @@ export class LoginGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this._loginService.isAuthenticated()) {
       this._router.navigate(['/dashboard']);
-      console.log("Redirect to Dash");
       return false;
     }
-    console.log("Allow Login");
     return true;
   }
 

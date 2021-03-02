@@ -5,6 +5,7 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // NG Translate
@@ -37,6 +38,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SharedModule,
     AccountModule,
     DashboardModule,
+    MatSnackBarModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(AppConfig.firebase),
     AngularFireAuthModule,

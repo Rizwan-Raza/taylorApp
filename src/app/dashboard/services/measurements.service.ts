@@ -22,7 +22,7 @@ export class MeasurementsService {
   }
 
   getAll() {
-    return this._angularStore.collection<Record>("records", ref => ref.orderBy("date")).snapshotChanges();
+    return this._angularStore.collection<Record>("records", ref => ref.orderBy("date", "desc")).snapshotChanges();
   }
 
   getById(id: string) {
@@ -33,16 +33,12 @@ export class MeasurementsService {
     return this._angularStore.collection<Record>("records").doc(id).delete();
   }
 
-  markRecordAsPaid(id: string) {
+  updateField(id: string, path:string, value:any) {
+    console.log(id, path, value);
     var updatedUserData = {};
-    updatedUserData["billing.status"] = 'paid';
+    updatedUserData[path] = value;
     return this._angularStore.collection<Record>("records").doc(id).update(updatedUserData);
   }
-
-  markRecordAsCompleted(id: string) {
-    return this._angularStore.collection<Record>("records").doc(id).update({ completed: true });
-  }
-
 }
 
 

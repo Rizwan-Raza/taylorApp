@@ -13,6 +13,7 @@ export class DashboardComponent {
 
   getInitials(componentReference) {
     this.title = componentReference.title;
+    componentReference.lateTitle?.subscribe((x: string) => this.title = x);
   }
 
 }

@@ -1,9 +1,10 @@
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStep, MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Billing } from '../../models/billing';
 import { Customer } from '../../models/customer';
 import { Measurements } from '../../models/measurements';
@@ -25,6 +26,7 @@ export class AddMeasurementsComponent implements OnInit {
   title: string = "Add Body Measurements";
   record: Record;
   toUpdate: boolean = false;
+  lateTitle: EventEmitter<string> = new EventEmitter<string>();
 
   customerForm: FormGroup;
   measurementForm: FormGroup;
@@ -107,9 +109,10 @@ export class AddMeasurementsComponent implements OnInit {
   ngOnInit() {
 
     if (this.route.snapshot.params.id) {
-      this.title = "Update";
+      this.title = "Update Body Measurements";
       let id = this.route.snapshot.params.id;
       this.toUpdate = true;
+      this.lateTitle.emit(this.title);
       this._measurementsService.getById(id).subscribe(x => {
         this.record = x.data();
         this.formData(this.record);
@@ -142,11 +145,12 @@ export class AddMeasurementsComponent implements OnInit {
       dialog.close();
       alert("Record " + (this.toUpdate ? "updated" : "added") + " successfully!");
       this.stepper.reset();
+      this.customerForm.reset();
+      this.billingForm.reset();
       this.stepper.selected.interacted = false;
       if (this.toUpdate) {
-        this._router.navigate(['/record/' + recordToAdd.uid + recordToAdd.date]);
+        this._router.navigate(['/record/edited/' + recordToAdd.uid + recordToAdd.date]);
       }
-      console.log(recordToAdd.uid + recordToAdd.date);
     }).catch(_ => {
       dialog.close();
       alert("Something went wrong. Try again.");

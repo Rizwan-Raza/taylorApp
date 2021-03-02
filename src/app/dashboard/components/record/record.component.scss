@@ -1,22 +1,77 @@
+.p-4 {
+    padding: 2rem;
+}
+
 .mat-expansion-panel {
     border-radius: 0px;
 }
 
-.row {
+.measurement {
     display: flex;
-    flex-direction: row;
-
-    .col {
-        display: flex;
+    flex-wrap: wrap;
+    .mat-list-item {
+        flex-basis: 50%;
     }
 }
+.brand-label .mat-card {
+    border-radius: 4px 4px 0px 0px;
+    padding: 16px 24px;
+    .mat-card-header,
+    .mat-divider {
+        display: none;
+    }
+    .float-phone {
+        position: absolute;
+        top: 16px;
+        right: 24px;
+        height: 32px;
+        line-height: 32px;
+        display: none;
+    }
+    .mat-card-content {
+        padding: 0px 16px;
+        div {
+            width: 50%;
+            height: 48px;
+            line-height: 48px;
+        }
+    }
+}
+@media print {
+    // .prt-sc.printing {
+    .prt-sc {
+        div.not-print {
+            display: none;
+        }
+        .brand-label .mat-card {
+            .mat-card-header,
+            .mat-divider,
+            .float-phone {
+                display: block;
+            }
+            .mat-card-content {
+                padding-top: 16px !important;
+                div {
+                    height: 28px;
+                    line-height: 28px;
+                }
+            }
+        }
+        .print {
+            .mat-expansion-panel:not(.mat-expanded) {
+                display: none;
+            }
 
-// @media print{
-//     :not(.toPrint){
-//         display: none;
-//     }
+            .mat-list-base {
+                padding: 0px;
+            }
 
-//     .toPrint{
-//         display: block;
-//     }
-// }
+            .mat-list .mat-list-item {
+                height: 28px !important;
+            }
+        }
+        ::ng-deep .print .mat-expansion-indicator {
+            display: none;
+        }
+    }
+}

@@ -31,8 +31,6 @@ export class ForgotPasswordComponent implements OnInit {
       this.snackbar.open("Reset Mail Sent Successfully", 'CLOSE', { duration: 5000 });
       this.completed.emit(true);
     }, error => {
-      console.log(email);
-
       this.snackbar.open(error.message, 'CLOSE', { duration: 5000 });
       this.processing = false;
     });

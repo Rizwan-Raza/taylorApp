@@ -57,9 +57,6 @@ export class HomeComponent implements OnInit {
       this.cards[2].value = this.unpaid_inc;
       this.cards[3].value = this.paid_com;
       this.cards[4].value = this.total;
-
-      // console.log(data);
-      // this.dataSource.data = this.dataRecords;
     });
 
   }

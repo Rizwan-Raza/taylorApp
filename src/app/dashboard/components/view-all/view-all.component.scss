@@ -5,3 +5,10 @@
 .text-center {
   text-align: center;
 }
+.hidden-actions {
+  opacity: 0;
+  transition: all 100ms ease-in-out;
+}
+tr:hover .hidden-actions {
+  opacity: 1;
+}

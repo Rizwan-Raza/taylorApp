@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'yesNo'
+  name: 'greenRed'
 })
-export class YesNoPipe implements PipeTransform {
+export class GreenRedPipe implements PipeTransform {
 
   transform(value: boolean, ...args: unknown[]): string {
-    return value ? "Yes" : "No";;
+    return value ? "#388e3c" : "#d32f2f";
   }
 
 }

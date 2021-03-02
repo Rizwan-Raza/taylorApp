@@ -43,19 +43,27 @@ const routes: Routes = [
         component: ViewAllComponent
       },
       {
-        path: 'record',
-        redirectTo: 'view-all',
-        pathMatch: 'full'
-      },
-      {
-        path: 'record/:id',
-        component: RecordComponent
-      },
-      {
         path: 'settings',
         component: SettingsComponent
-      }
+      },
+      {
+        path: 'record/edited/:id',
+        component: RecordComponent,
+        data: {
+          nopadding: true
+        }
+      },
+
     ]
+  },
+  {
+    path: 'record/:id',
+    component: RecordComponent,
+  },
+  {
+    path: 'record',
+    component: RecordComponent,
+    pathMatch: 'full'
   },
 ];
 

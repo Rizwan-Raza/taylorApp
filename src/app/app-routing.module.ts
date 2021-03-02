@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './account/components/login/login.component';
+import { UpdatePasswordComponent } from './account/components/update-password/update-password.component';
 import { DashboardLoadGuard } from './account/guards/dashboard-load.guard';
 import { LoginGuard } from './account/guards/login.guard';
+import { RecordComponent } from './dashboard/components/record/record.component';
 import { DashboardRoutingModule } from './dashboard/dashboard-routing.module';
 import { PageNotFoundComponent } from './shared/components/';
 
@@ -30,7 +32,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy', useHash: true }),
     DashboardRoutingModule
   ],
   exports: [RouterModule]

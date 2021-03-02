@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Record } from '../../models/record';
 import { MeasurementsService } from '../../services/measurements.service';
-import { RecordComponent } from '../record/record.component';
 
 @Component({
   selector: 'view-all',
@@ -17,7 +17,7 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
 
   title: string = "View All Records";
 
-  constructor(private _measurementService: MeasurementsService, private route: ActivatedRoute, private dialog: MatDialog) { }
+  constructor(private _measurementService: MeasurementsService, private route: ActivatedRoute, private dialog: MatDialog, private snackbar: MatSnackBar) { }
 
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -45,7 +45,6 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.filterString = this.route.snapshot.params.filter;
-    // console.log(filter);
 
     this.dataSource = new MatTableDataSource<Record>(Array.from(this.dataRecords.values()));
 
@@ -63,17 +62,15 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
         case 'customer.firstName': return item.customer.firstName;
-        case 'billing.status': return item.billing.status;
+        case 'billing.cost': return item.billing.cost;
         default: return item[property];
       }
     };
 
     // Filtering 
     this.dataSource.filterPredicate = (data: Record, filter: string) => {
-      // console.log(filter);
       let predicateString: string;
       Object.keys(data.customer).map(k => predicateString += data.customer[k]);
-      // console.log(predicateString);
       switch (filter) {
         case ":paid":
           return data.billing.status == 'paid';
@@ -103,7 +100,6 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    // console.log(this.dataSource.data.length);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
@@ -126,27 +122,36 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     }
   }
 
-  markAsPaid(id: string) {
-    this._measurementService.markRecordAsPaid(id).then(_ => { console.log("Marked Paid"); })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  markAsCompleted(id: string) {
-    this._measurementService.markRecordAsCompleted(id).then(_ => { console.log("Marked Completed"); })
-      .catch(err => {
-        console.log(err);
-      });
+  updateField(id: string, path: string, value: any, success: string) {
+    this._measurementService.updateField(id, path, value).then(_ => this.snackbar.open(success, 'CLOSE', { duration: 5000 })).catch(e => this.snackbar.open(e.message, 'CLOSE', { duration: 5000 }));
   }
 
   openRecord(id: string) {
-    this.dialog.open(RecordComponent,
-      {
-        minWidth: 800,
-        maxHeight: 600,
-        data: { id: id }
-      });
+
+    const remote = require('electron').remote;
+    const BrowserWindow = remote.BrowserWindow;
+
+    // Create a browser window
+    const win = new BrowserWindow({
+      width: 900,
+      height: 900,
+      center: true,
+      icon: 'src/assets/logo.png',
+
+    });
+    win.removeMenu();
+    // Load the page + route
+    // win.loadURL('file://' + __dirname + '/index.html#/record/' + id);
+    win.loadURL('file://' + __dirname + '/index.html#/record/' + id);
+    // window.open('/index.html#/record/' + id, '_blank', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+    // this.dialog.open(RecordComponent,
+    //   {
+    //     minWidth: 800,
+    //     maxHeight: 600,
+    //     data: { id: id }
+    //   });
   }
+
+
 
 }

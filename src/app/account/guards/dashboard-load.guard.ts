@@ -14,10 +14,8 @@ export class DashboardLoadGuard implements CanLoad {
     segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (this._loginService.isAuthenticated()) {
       // this._router.navigate(['dashboard']);
-      console.log("DL T");
       return true;
     }
-    console.log("DL F");
 
     // navigate to login page
     this._router.navigate(['login']);

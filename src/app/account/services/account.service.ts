@@ -56,7 +56,7 @@ export class LoginService {
       var cred = firebase.default.auth.EmailAuthProvider.credential(email, currentPassword);
       res.reauthenticateWithCredential(cred).then(_ => {
         res.updatePassword(newPassword).then(_ => {
-          console.log("Password changed successfully.");
+          alert("Password changed successfully.");
         });
       }).catch(err => {
         alert(err.message);
@@ -70,7 +70,7 @@ export class LoginService {
       var cred = firebase.default.auth.EmailAuthProvider.credential(currentEmail, password);
       res.reauthenticateWithCredential(cred).then(_ => {
         res.updateEmail(newEmail).then(_ => {
-          console.log("Email changed successfully.");
+          alert("Email changed successfully.");
         });
       }).catch(err => {
         alert(err.message);

@@ -1,6 +1,4 @@
-import { style } from '@angular/animations';
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Record } from '../../models/record';
 import { MeasurementsService } from '../../services/measurements.service';
@@ -15,26 +13,32 @@ export class RecordComponent implements OnInit {
   title: string = "Customer Tailoring Record";
   recordId: string;
 
+  currentDate: Date = new Date();
+  nopadding: boolean = false;
+
   record: Record;
 
   constructor(private _measurementService: MeasurementsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    console.log(location.hash);
     this.recordId = this.route.snapshot.params.id;
     this._measurementService.getById(this.recordId).subscribe(x => {
       this.record = x.data();
-      console.log(this.record);
     });
+    this.route.data.subscribe(x => x && (this.nopadding = x.nopadding));
   }
 
   onPrint() {
-    const printContent = document.getElementById("toPrint");
-    const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-    WindowPrt.focus();
-    WindowPrt.document.write(printContent.innerHTML);
-    WindowPrt.document.close();
-    WindowPrt.print();
-    WindowPrt.close();
+    if (localStorage.getItem("theme") == "dark") {
+      if (confirm("Printing won't work with Dark theme, want to switch Light Theme?")) {
+        document.body.classList.toggle("kt-dark-theme");
+        localStorage.setItem("theme", "light");
+      } else {
+        return;
+      }
+    }
+    // document.getElementsByClassName("prt-sc")[0].classList.add("printing");
+    print();
   }
-
 }
