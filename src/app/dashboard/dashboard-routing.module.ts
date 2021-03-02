@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardGuard } from '../account/guards/dashboard.guard';
 import { AddMeasurementsComponent } from './components/add-measurements/add-measurements.component';
 import { HomeComponent } from './components/home/home.component';
-import { MensComponent } from './components/mens/mens.component';
 import { RecordComponent } from './components/record/record.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ViewAllComponent } from './components/view-all/view-all.component';
@@ -21,10 +20,6 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: HomeComponent
-      },
-      {
-        path: 'men',
-        component: MensComponent
       },
       {
         path: 'add-measurements',

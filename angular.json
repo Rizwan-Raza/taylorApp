@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Khan-Tailors": {
+    "khan-tailors": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -85,24 +85,24 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "Khan-Tailors:build"
+            "browserTarget": "khan-tailors:build"
           },
           "configurations": {
             "dev": {
-              "browserTarget": "Khan-Tailors:build:dev"
+              "browserTarget": "khan-tailors:build:dev"
             },
             "web": {
-              "browserTarget": "Khan-Tailors:build:web"
+              "browserTarget": "khan-tailors:build:web"
             },
             "production": {
-              "browserTarget": "Khan-Tailors:build:production"
+              "browserTarget": "khan-tailors:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Khan-Tailors:build"
+            "browserTarget": "khan-tailors:build"
           }
         },
         "test": {
@@ -136,7 +136,7 @@
         }
       }
     },
-    "Khan-Tailors-e2e": {
+    "khan-tailors-e2e": {
       "root": "e2e",
       "projectType": "application",
       "architect": {
@@ -152,7 +152,7 @@
       }
     }
   },
-  "defaultProject": "Khan-Tailors",
+  "defaultProject": "khan-tailors",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "kt",

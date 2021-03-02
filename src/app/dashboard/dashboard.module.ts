@@ -32,7 +32,6 @@ import { AddMeasurementsComponent } from './components/add-measurements/add-meas
 import { MoreInfoComponent } from './components/dialogs/more-info/more-info.component';
 import { PleaseWaitComponent } from './components/dialogs/please-wait/please-wait.component';
 import { HomeComponent } from './components/home/home.component';
-import { MensComponent } from './components/mens/mens.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { RecordComponent } from './components/record/record.component';
 import { SettingsComponent } from './components/settings/settings.component';
@@ -50,7 +49,6 @@ import { MeasurementsService } from './services/measurements.service';
 
 @NgModule({
   declarations: [
-    MensComponent,
     NavbarComponent,
     HomeComponent,
     DashboardComponent,

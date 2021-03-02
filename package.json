@@ -1,8 +1,8 @@
 {
   "name": "khan-tailors",
-  "version": "9.0.4",
-  "description": "Angular 11 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/Khan-Tailors",
+  "version": "1.0.0",
+  "description": "Khan Tailors - Chowk Sultanpur",
+  "homepage": "https://github.com/Rizwan-Raza/Khan-Tailors",
   "author": {
     "name": "Rizwan Raza",
     "email": "team.marstech@gmail.com"

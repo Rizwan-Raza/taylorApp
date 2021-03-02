@@ -136,8 +136,6 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
       width: 900,
       height: 900,
       center: true,
-      icon: 'src/assets/logo.png',
-
     });
     win.removeMenu();
     // Load the page + route

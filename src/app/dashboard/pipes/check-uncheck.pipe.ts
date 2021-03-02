@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 
 @Pipe({
   name: 'checkUncheck'
