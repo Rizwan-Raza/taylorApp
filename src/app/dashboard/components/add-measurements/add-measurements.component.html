@@ -1,6 +1,6 @@
 <div *ngIf="customerForm; else loader;">
-  <mat-horizontal-stepper [linear]="false" #stepper class="mat-elevation-z8">
-    <mat-step [stepControl]="customerForm" [errorMessage]="getCustomerFormError()" #customer>
+  <mat-horizontal-stepper [linear]="true" #stepper class="mat-elevation-z8">
+    <mat-step [stepControl]="customerForm" #customer>
       <form [formGroup]="customerForm">
         <ng-template matStepLabel>Customer Information</ng-template>
         <div class="row">
@@ -45,7 +45,15 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Tailoring</mat-label>
-          <input matInput formControlName="tailoring">
+          <mat-select formControlName="tailoring" [value]="'custom'" (selectionChange)="tailorSelectorEvent($event)">
+            <mat-option value="shirt">Shirt</mat-option>
+            <mat-option value="pant">Pant</mat-option>
+            <mat-option value="coat">Coat</mat-option>
+            <mat-option value="jacket">Basket Jacket</mat-option>
+            <mat-option value="kurta">Kurta/Kurti</mat-option>
+            <mat-option value="shirt_pant">Shirt + Pant</mat-option>
+            <mat-option value="custom">Custom</mat-option>
+          </mat-select>
           <mat-hint>What customer requested to tailor?</mat-hint>
           <mat-error *ngIf="customerForm.controls['tailoring'].hasError('required')">
             Tailoring info is <strong>required</strong>
@@ -60,9 +68,9 @@
     </mat-step>
     <mat-step [stepControl]="measurementForm" #measurement [completed]="checkCompleted(measurement)">
       <form [formGroup]="measurementForm">
-        <ng-template matStepLabel>Measurements</ng-template>
+        <ng-template matStepLabel>{{tailorSelector}} Measurements</ng-template>
         <mat-grid-list cols="2" rowHeight="130px">
-          <mat-grid-tile *ngFor="let card of cards">
+          <mat-grid-tile *ngFor="let card of cards; let i = index">
             <mat-card class="mat-elevation-z0">
               <div class="row">
                 <div class="col">
@@ -71,8 +79,8 @@
                 <div class="col">
                   <mat-card-header>
                     <mat-card-title>
-                      {{card.title}}
-                      <button mat-icon-button class="info-button"
+                      {{i+1}}. {{card.title}}
+                      <button mat-icon-button class="info-button" *ngIf="card.dImg"
                         (click)="openInfoDialog(card.title,card.dImg, card.desc)">
                         <mat-icon>help_outline</mat-icon>
                       </button>
@@ -116,8 +124,7 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="billingForm" errorMessage="Cost is required" #billing
-      [completed]="checkCompleted(billing)">
+    <mat-step [stepControl]="billingForm" #billing [completed]="checkCompleted(billing)">
       <form [formGroup]="billingForm">
         <ng-template matStepLabel>Billing Information</ng-template>
         <div class="row">

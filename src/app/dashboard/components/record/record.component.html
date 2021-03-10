@@ -1,10 +1,15 @@
 <div [ngClass]="{'p-4': !nopadding, 'prt-sc': true}">
-    <div class="not-print" align='right' *ngIf="!nopadding">
-        <button mat-raised-button color="primary" (click)="onPrint()">
-            <mat-icon>print</mat-icon> Print
+    <div class="not-print" *ngIf="!nopadding">
+        <button mat-raised-button color="primary" (click)="onPrint(0)">
+            <mat-icon>print</mat-icon> Print (Customer+Tailor)
         </button>
-        <br />
-        <br />
+        <span></span>
+        <button mat-raised-button color="primary" (click)="onPrint(1)">
+            <mat-icon>print</mat-icon> Print (for Customer)
+        </button>
+        <button mat-raised-button color="primary" (click)="onPrint(2)">
+            <mat-icon>print</mat-icon> Print (for Tailor)
+        </button>
     </div>
     <div class="print brand-label">
         <mat-card class="mat-elevation-z8">
@@ -34,7 +39,7 @@
     </div>
 
     <mat-accordion class="print" multi="true" *ngIf="record; else loadingBlock">
-        <mat-expansion-panel class="mat-elevation-z8" expanded>
+        <mat-expansion-panel class="mat-elevation-z8 for-customer" expanded>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <h3>Customer Information</h3>
@@ -49,66 +54,11 @@
                 </mat-list-item>
                 <mat-list-item *ngIf="record.customer.address"><b>Address: &nbsp; </b> {{record.customer.address}}
                 </mat-list-item>
-                <mat-list-item><b>Tailoring: &nbsp; </b> {{record.customer.tailoring}}</mat-list-item>
+                <mat-list-item><b>Tailoring: &nbsp; </b> {{record.customer.tailoring | tailoring}}</mat-list-item>
             </mat-list>
         </mat-expansion-panel>
 
-        <mat-expansion-panel class="mat-elevation-z8" expanded>
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <h3>Measurements Information</h3>
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <mat-list class="measurement">
-                <mat-list-item *ngIf="record.measurement.neck"><b>Neck: &nbsp; </b> {{record.measurement.neck}}
-                    inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.chest"><b>Chest: &nbsp; </b>
-                    {{record.measurement.chest}}
-                    inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.waist"><b>Waist: &nbsp; </b>
-                    {{record.measurement.waist}}
-                    inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.shirtSeat"><b>Seat (for Shirt): &nbsp; </b>
-                    {{record.measurement.shirtSeat}} inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.shirtLength"><b>Shirt length: &nbsp; </b>
-                    {{record.measurement.shirtLength}} inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.shoulderWidth"><b>Shoulder width: &nbsp; </b>
-                    {{record.measurement.shoulderWidth}} inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.armLength"><b>Arm length: &nbsp; </b>
-                    {{record.measurement.armLength}} inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.wrist"><b>Wrist: &nbsp; </b>
-                    {{record.measurement.wrist}}
-                    inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.pantsHip"><b>Hip (for Pant): &nbsp; </b>
-                    {{record.measurement.pantsHip}} inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.pantsSeat"><b>Seat (for Pant): &nbsp; </b>
-                    {{record.measurement.pantsSeat}} inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.inseam"><b>Inner length: &nbsp; </b>
-                    {{record.measurement.inseam}} inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.hip"><b>Actual hip: &nbsp; </b>
-                    {{record.measurement.hip}}
-                    inches
-                </mat-list-item>
-                <mat-list-item *ngIf="record.measurement.other"><b>Others: &nbsp; </b>
-                    {{record.measurement.other}}
-                </mat-list-item>
-
-
-            </mat-list>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="mat-elevation-z8" expanded>
+        <mat-expansion-panel class="mat-elevation-z8 for-customer" expanded>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <h3>Billing Information</h3>
@@ -124,6 +74,235 @@
                 </mat-list-item>
             </mat-list>
         </mat-expansion-panel>
+        <div class="cut-out">
+            <mat-icon>content_cut</mat-icon>
+        </div>
+        <mat-expansion-panel class="mat-elevation-z8" id="for-tailor" expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Measurements Information</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list class="toggle-tailer">
+                <mat-list-item><b>Name: &nbsp; </b> {{record.customer.firstName+"
+                    "+(record.customer.lastName?record.customer.lastName:'')}}
+                </mat-list-item>
+                <mat-list-item><b>Tailoring: &nbsp; </b> {{record.customer.tailoring | tailoring }}</mat-list-item>
+            </mat-list>
+
+            <ng-template #shirtLength>
+                <mat-list-item *ngIf="record.measurement.shirtLength && increment"><b>{{mi}}. Shirt length (लम्बाई):
+                        &nbsp; </b>
+                    {{record.measurement.shirtLength}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #chest>
+                <mat-list-item *ngIf="record.measurement.chest && increment"><b>{{mi}}. Chest (सीना): &nbsp; </b>
+                    {{record.measurement.chest}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #shoulderWidth>
+                <mat-list-item *ngIf="record.measurement.shoulderWidth && increment"><b>{{mi}}. Shoulder width
+                        (कन्धा): &nbsp; </b>
+                    {{record.measurement.shoulderWidth}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #armLength>
+                <mat-list-item *ngIf="record.measurement.armLength && increment"><b>{{mi}}. Arm length (आस्तीन):
+                        &nbsp; </b>
+                    {{record.measurement.armLength}} inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #wrist>
+                <mat-list-item *ngIf="record.measurement.wrist && increment"><b>{{mi}}. Wrist (कलाई): &nbsp; </b>
+                    {{record.measurement.wrist}} inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #neck>
+                <mat-list-item *ngIf="record.measurement.neck && increment"><b>{{mi}}. Neck (गला): &nbsp; </b>
+                    {{record.measurement.neck}} inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #shirtSeat>
+                <mat-list-item *ngIf="record.measurement.shirtSeat && increment"><b>{{mi}}. Seat (for Shirt, सामना):
+                        &nbsp; </b>
+                    {{record.measurement.shirtSeat}} inches
+                </mat-list-item>
+            </ng-template>
+
+            <ng-template #inseam>
+                <mat-list-item *ngIf="record.measurement.inseam && increment"><b>{{mi}}. Inner Length (लंबाई):
+                        &nbsp; </b>
+                    {{record.measurement.inseam}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #outerLength>
+                <mat-list-item *ngIf="record.measurement.outerLength && increment"><b>{{mi}}. Outer Length (लंबाई):
+                        &nbsp; </b>
+                    {{record.measurement.outerLength}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #waist>
+                <mat-list-item *ngIf="record.measurement.waist && increment"><b>{{mi}}. Waist (कमर): &nbsp; </b>
+                    {{record.measurement.waist}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #pantsHip>
+                <mat-list-item *ngIf="record.measurement.pantsHip && increment"><b>{{mi}}. Hip (for Pant, कूल्हे):
+                        &nbsp; </b>
+                    {{record.measurement.pantsHip}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #crotch>
+                <mat-list-item *ngIf="record.measurement.crotch && increment"><b>{{mi}}. Crotch (गेदरी/आसन): &nbsp;
+                    </b>
+                    {{record.measurement.crotch}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #pantsCuff>
+                <mat-list-item *ngIf="record.measurement.pantsCuff && increment"><b>{{mi}}. Pant Cuff (मोहरी):
+                        &nbsp; </b>
+                    {{record.measurement.pantsCuff}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #thigh>
+                <mat-list-item *ngIf="record.measurement.thigh && increment"><b>{{mi}}. Thigh (जांघ): &nbsp; </b>
+                    {{record.measurement.thigh}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #pantsSeat>
+                <mat-list-item *ngIf="record.measurement.pantsSeat && increment"><b>{{mi}}. Seat (for Pant, सामना):
+                        &nbsp; </b>
+                    {{record.measurement.pantsSeat}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #back>
+                <mat-list-item *ngIf="record.measurement.back && increment"><b>{{mi}}. Back (बैक): &nbsp; </b>
+                    {{record.measurement.back}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #hip>
+                <mat-list-item *ngIf="record.measurement.hip && increment"><b>{{mi}}. Actual hip (कूल्हे): &nbsp;
+                    </b>
+                    {{record.measurement.hip}}
+                    inches
+                </mat-list-item>
+            </ng-template>
+            <ng-template #other>
+                <mat-list-item *ngIf="record.measurement.other && increment"><b>Others: &nbsp; </b>
+                    {{record.measurement.other}}
+                </mat-list-item>
+            </ng-template>
+            <container-element [ngSwitch]="record.customer.tailoring" *ngIf="setZero">
+                <mat-list class="shirt measurement" *ngSwitchCase="'shirt'">
+                    <ng-template [ngTemplateOutlet]="shirtLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="chest"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shoulderWidth"></ng-template>
+                    <ng-template [ngTemplateOutlet]="armLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="wrist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="neck"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shirtSeat"></ng-template>
+                    <ng-template [ngTemplateOutlet]="other"></ng-template>
+                </mat-list>
+
+                <mat-list class="pant measurement" *ngSwitchCase="'pant'">
+                    <ng-template [ngTemplateOutlet]="outerLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="waist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsHip"></ng-template>
+                    <ng-template [ngTemplateOutlet]="crotch"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsCuff"></ng-template>
+                    <ng-template [ngTemplateOutlet]="thigh"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsSeat"></ng-template>
+                    <ng-template [ngTemplateOutlet]="back"></ng-template>
+                    <ng-template [ngTemplateOutlet]="other"></ng-template>
+                </mat-list>
+                <mat-list class="coat measurement" *ngSwitchCase="'coat'">
+                    <ng-template [ngTemplateOutlet]="shirtLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="chest"></ng-template>
+                    <ng-template [ngTemplateOutlet]="hip"></ng-template>
+                    <ng-template [ngTemplateOutlet]="crotch"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shoulderWidth"></ng-template>
+                    <ng-template [ngTemplateOutlet]="armLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="back"></ng-template>
+                    <ng-template [ngTemplateOutlet]="wrist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="other"></ng-template>
+                </mat-list>
+
+                <mat-list class="jacket measurement" *ngSwitchCase="'jacket'">
+                    <ng-template [ngTemplateOutlet]="shirtLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="chest"></ng-template>
+                    <ng-template [ngTemplateOutlet]="waist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="hip"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shoulderWidth"></ng-template>
+                    <ng-template [ngTemplateOutlet]="neck"></ng-template>
+                    <ng-template [ngTemplateOutlet]="other"></ng-template>
+                </mat-list>
+
+                <mat-list class="kurta measurement" *ngSwitchCase="'kurta'">
+                    <ng-template [ngTemplateOutlet]="shirtLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="chest"></ng-template>
+                    <ng-template [ngTemplateOutlet]="waist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="hip"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shoulderWidth"></ng-template>
+                    <ng-template [ngTemplateOutlet]="armLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="neck"></ng-template>
+                    <ng-template [ngTemplateOutlet]="other"></ng-template>
+                </mat-list>
+                <mat-list class="shirt_pant measurement" *ngSwitchCase="'shirt_pant'">
+                    <ng-template [ngTemplateOutlet]="shirtLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="chest"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shoulderWidth"></ng-template>
+                    <ng-template [ngTemplateOutlet]="armLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="wrist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="neck"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shirtSeat"></ng-template>
+
+                    <ng-template [ngTemplateOutlet]="outerLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="waist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsHip"></ng-template>
+                    <ng-template [ngTemplateOutlet]="crotch"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsCuff"></ng-template>
+                    <ng-template [ngTemplateOutlet]="thigh"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsSeat"></ng-template>
+                    <ng-template [ngTemplateOutlet]="back"></ng-template>
+                    <ng-template [ngTemplateOutlet]="other"></ng-template>
+                </mat-list>
+                <mat-list class="custom measurement" *ngSwitchDefault>
+                    <ng-template [ngTemplateOutlet]="shirtLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="chest"></ng-template>
+                    <ng-template [ngTemplateOutlet]="waist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shirtSeat"></ng-template>
+                    <ng-template [ngTemplateOutlet]="shoulderWidth"></ng-template>
+                    <ng-template [ngTemplateOutlet]="armLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="wrist"></ng-template>
+                    <ng-template [ngTemplateOutlet]="neck"></ng-template>
+                    <ng-template [ngTemplateOutlet]="hip"></ng-template>
+                    <ng-template [ngTemplateOutlet]="back"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsSeat"></ng-template>
+                    <ng-template [ngTemplateOutlet]="inseam"></ng-template>
+                    <ng-template [ngTemplateOutlet]="outerLength"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsHip"></ng-template>
+                    <ng-template [ngTemplateOutlet]="crotch"></ng-template>
+                    <ng-template [ngTemplateOutlet]="thigh"></ng-template>
+                    <ng-template [ngTemplateOutlet]="pantsCuff"></ng-template>
+                    <ng-template [ngTemplateOutlet]="other"></ng-template>
+                </mat-list>
+            </container-element>
+
+        </mat-expansion-panel>
+
     </mat-accordion>
 
     <ng-template #loadingBlock>

@@ -17,5 +17,11 @@ export class Measurements {
     inseam: number;
     hip: number;
 
+    back: number;
+    outerLength: number;
+    crotch: number;
+    thigh: number;
+    pantsCuff: number;
+
     other: string;
 }

@@ -37,6 +37,31 @@
         }
     }
 }
+div.not-print {
+    display: flex;
+    padding-bottom: 1rem;
+    span {
+        flex: 1;
+    }
+    button {
+        &:not(:first-child) {
+            margin-left: 16px;
+        }
+    }
+}
+.toggle-tailer {
+    display: none;
+}
+div.cut-out {
+    display: none;
+    position: relative;
+    border-bottom: 2px dashed black;
+    margin: 2rem 0px;
+    .mat-icon {
+        position: absolute;
+        top: -10px;
+    }
+}
 @media print {
     // .prt-sc.printing {
     .prt-sc {
@@ -72,6 +97,31 @@
         }
         ::ng-deep .print .mat-expansion-indicator {
             display: none;
+        }
+    }
+
+    .prt-sc.printing-4-customer {
+        #for-tailor {
+            display: none;
+        }
+    }
+
+    .prt-sc.printing-4-tailor {
+        .for-customer {
+            display: none;
+        }
+
+        .toggle-tailer {
+            display: block;
+        }
+    }
+
+    .prt-sc.printing-both {
+        div.cut-out {
+            display: block;
+        }
+        .toggle-tailer {
+            display: block;
         }
     }
 }

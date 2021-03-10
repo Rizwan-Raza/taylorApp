@@ -42,6 +42,7 @@ import { GreenRedPipe } from './pipes/green-red.pipe';
 import { IsPaidPipe } from './pipes/is-paid.pipe';
 import { PaymentMethodPipe } from './pipes/payment-method.pipe';
 import { PaymentStatusPipe } from './pipes/payment-status.pipe';
+import { TailoringPipe } from './pipes/tailoring.pipe';
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { MeasurementsService } from './services/measurements.service';
 
@@ -63,7 +64,8 @@ import { MeasurementsService } from './services/measurements.service';
     PaymentStatusPipe,
     PaymentMethodPipe,
     CheckUncheckPipe,
-    GreenRedPipe
+    GreenRedPipe,
+    TailoringPipe
   ],
   imports: [
     CommonModule,

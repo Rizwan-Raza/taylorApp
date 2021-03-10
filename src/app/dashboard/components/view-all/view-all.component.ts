@@ -70,27 +70,44 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     // Filtering 
     this.dataSource.filterPredicate = (data: Record, filter: string) => {
       let predicateString: string;
+      let predicateBools: boolean[] = [];
       Object.keys(data.customer).map(k => predicateString += data.customer[k]);
-      switch (filter) {
-        case ":paid":
-          return data.billing.status == 'paid';
-        case ":unpaid":
-          return data.billing.status != 'paid';
-        case ":incomplete":
-          return !data.completed;
-        case ":completed":
-          return data.completed;
-        case ":unpaid:incomplete":
-          return data.billing.status != 'paid' && !data.completed;
-        case ":unpaid:completed":
-          return data.billing.status != 'paid' && data.completed;
-        case ":paid:incomplete":
-          return data.billing.status == 'paid' && !data.completed;;
-        case ":paid:completed":
-          return data.billing.status == 'paid' && data.completed;;
-        default:
-          return predicateString.trim().toLowerCase().indexOf(filter) != -1;
+      if (filter.includes(":paid")) {
+        predicateBools.push(data.billing.status == 'paid');
       }
+      if (filter.includes("::unpaid")) {
+        predicateBools.push(data.billing.status != 'paid');
+      }
+      if (filter.includes("::completed")) {
+        predicateBools.push(data.completed);
+      }
+      if (filter.includes("::incomplete")) {
+        predicateBools.push(data.completed);
+      }
+      if (filter.includes("::shirt")) {
+        predicateBools.push(data.customer.tailoring == "shirt");
+      }
+      if (filter.includes("::pant")) {
+        predicateBools.push(data.customer.tailoring == "pant");
+      }
+      if (filter.includes("::coat")) {
+        predicateBools.push(data.customer.tailoring == "coat");
+      }
+      if (filter.includes("::jacket")) {
+        predicateBools.push(data.customer.tailoring == "jacket");
+      }
+      if (filter.includes("::kurta")) {
+        predicateBools.push(data.customer.tailoring == "kurta");
+      }
+      if (filter.includes("::shirt_pant")) {
+        predicateBools.push(data.customer.tailoring == "shirt_pant");
+      }
+      if (filter.includes("::custom")) {
+        predicateBools.push(data.customer.tailoring == "custom");
+      }
+      predicateBools.push(predicateString.trim().toLowerCase().indexOf(filter.split("::")[0]) != -1);
+      console.log(predicateBools);
+      return predicateBools.every(x => x);
     };
 
   }
@@ -127,7 +144,7 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
   }
 
   openRecord(id: string) {
-
+    // For Release Mode
     const remote = require('electron').remote;
     const BrowserWindow = remote.BrowserWindow;
 
@@ -139,15 +156,16 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     });
     win.removeMenu();
     // Load the page + route
-    // win.loadURL('file://' + __dirname + '/index.html#/record/' + id);
     win.loadURL('file://' + __dirname + '/index.html#/record/' + id);
+
+    // For Debug Mode
     // window.open('/index.html#/record/' + id, '_blank', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-    // this.dialog.open(RecordComponent,
-    //   {
-    //     minWidth: 800,
-    //     maxHeight: 600,
-    //     data: { id: id }
-    //   });
+    //   // this.dialog.open(RecordComponent,
+    //   //   {
+    //   //     minWidth: 800,
+    //   //     maxHeight: 600,
+    //   //     data: { id: id }
+    //   //   });
   }
 
 

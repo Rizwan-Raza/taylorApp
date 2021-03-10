@@ -13,7 +13,31 @@
   font-display: auto;
   src: url(./assets/fonts/ProductSansBold.ttf);
 }
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+/* fallback */
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: url(./assets/fonts/MaterialIcons-Regular.ttf);
+}
+
+.material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -75,7 +99,13 @@ body {
   font-family: "ProductSans", Arial, Helvetica, sans-serif;
   background-color: #eee;
 }
-h1, h2, h3, h4, h5, h6, b {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b {
   font-family: "ProductSansBold", Arial, Helvetica, sans-serif;
 }
 body.kt-dark-theme {
