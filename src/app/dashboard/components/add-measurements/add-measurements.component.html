@@ -7,7 +7,7 @@
           <div class="col">
             <mat-form-field appearance="outline">
               <mat-label>First name</mat-label>
-              <input matInput formControlName="firstName">
+              <input matInput formControlName="firstName" required type="text">
               <mat-error *ngIf="customerForm.controls['firstName'].hasError('required')">
                 First name is <strong>required</strong>
               </mat-error>
@@ -25,10 +25,10 @@
             <mat-form-field appearance="outline">
               <mat-label>Phone number</mat-label>
               <span matPrefix>+91 &nbsp; </span>
-              <input matInput #phoneNumber maxlength="10" type="tel" formControlName="phoneNumber">
-              <!-- <mat-error *ngIf="customerForm.controls['phoneNumber'].hasError('required')">
-                Address is <strong>required</strong>
-              </mat-error> -->
+              <input matInput #phoneNumber maxlength="10" type="tel" formControlName="phoneNumber" required>
+              <mat-error *ngIf="customerForm.controls['phoneNumber'].hasError('required')">
+                Phone number is <strong>required</strong>
+              </mat-error>
               <mat-hint align="end">{{phoneNumber.value.length}} / 10</mat-hint>
             </mat-form-field>
           </div>
@@ -43,22 +43,65 @@
           <mat-label>Address</mat-label>
           <textarea matInput formControlName="address"></textarea>
         </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Tailoring</mat-label>
-          <mat-select formControlName="tailoring" [value]="'custom'" (selectionChange)="tailorSelectorEvent($event)">
-            <mat-option value="shirt">Shirt</mat-option>
-            <mat-option value="pant">Pant</mat-option>
-            <mat-option value="coat">Coat</mat-option>
-            <mat-option value="jacket">Basket Jacket</mat-option>
-            <mat-option value="kurta">Kurta/Kurti</mat-option>
-            <mat-option value="shirt_pant">Shirt + Pant</mat-option>
-            <mat-option value="custom">Custom</mat-option>
-          </mat-select>
-          <mat-hint>What customer requested to tailor?</mat-hint>
-          <mat-error *ngIf="customerForm.controls['tailoring'].hasError('required')">
-            Tailoring info is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-label>Tailoring</mat-label>
+              <mat-select formControlName="tailoring" [value]="'custom'" (selectionChange)="tailorSelectorEvent($event)"
+                required>
+                <mat-optgroup label="Shirt">
+                  <mat-option value="shirt-0">Shirt (शर्ट)</mat-option>
+                  <mat-option value="shirt-1">Open Shirt (ओपन शर्ट)</mat-option>
+                  <mat-option value="shirt-2">Bushirt (बुशर्ट)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Pant">
+                  <mat-option value="pant-0">Pant (पैंट)</mat-option>
+                  <mat-option value="pant-1">Long Belt Pant (लॉन्ग बेल्ट पैंट)</mat-option>
+                  <mat-option value="pant-2">Wide Leg Pant (चौड़ामोड़ पैंट)</mat-option>
+                  <mat-option value="pant-3">Trouser (ट्राउजर)</mat-option>
+                  <mat-option value="pant-4">Jeans (जींस)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Coat">
+                  <mat-option value="coat-0">Coat (कोट)</mat-option>
+                  <mat-option value="coat-1">Coat 2 Button (कोट 2 बटन)</mat-option>
+                  <mat-option value="coat-2">Waistcoat (वेस्टकोट)</mat-option>
+                  <mat-option value="coat-3">Jodhpuri Coat (बंदगला कोट)</mat-option>
+                  <mat-option value="coat-4">V Neck Coat (वी गला कोट)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Jacket">
+                  <mat-option value="jacket-0">Jacket (जैकेट)</mat-option>
+                  <mat-option value="jacket-1">Basket Jacket (बास्केट जैकेट)</mat-option>
+                  <mat-option value="jacket-2">V Neck Jacket (वी गला जैकेट)</mat-option>
+                  <mat-option value="jacket-3">Double Breasted Jacket (डबल ब्रेस्ट जैकेट)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Kurta">
+                  <mat-option value="kurta-0">Kurta/Kurti (कुर्ता)</mat-option>
+                  <mat-option value="kurta-1">Pathani Kurta (पठानी कुर्ता)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Pajama">
+                  <mat-option value="pajama-0">Pajama (पजामा)</mat-option>
+                  <mat-option value="pajama-1">Chudidaar Pajama (चूड़ीदार पजामा)</mat-option>
+                  <mat-option value="pajama-2">Pocket Pajama (जेबदार पजामा)</mat-option>
+                  <mat-option value="pajama-3">Shalwaar (शलवार)</mat-option>
+                </mat-optgroup>
+                <mat-option value="custom">Custom</mat-option>
+              </mat-select>
+              <mat-hint>What customer requested to tailor?</mat-hint>
+              <mat-error *ngIf="customerForm.controls['tailoring'].hasError('required')">
+                Tailoring info is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col" *ngIf="customerForm.controls['tailoring'].value == 'custom'">
+            <mat-form-field appearance="outline">
+              <mat-label>Custom Tailoring</mat-label>
+              <input matInput type="text" formControlName="custom" required>
+              <mat-error *ngIf="customerForm.controls['custom'].hasError('required')">
+                Custom Tailoring info is <strong>required</strong> when selected Custom
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
         <br />
         <br />
         <div align="end" class="to-bottom">
@@ -89,7 +132,7 @@
                   <mat-card-content>
                     <mat-form-field appearance="outline">
                       <mat-label>Size</mat-label>
-                      <input matInput type="number" formControlName="{{card.control}}">
+                      <input matInput type="text" formControlName="{{card.control}}" pattern="[0-9 /\\]*">
                       <span matSuffix> &nbsp; inches</span>
                     </mat-form-field>
                   </mat-card-content>
@@ -177,38 +220,17 @@
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
       <div class="last-step">
-
-        <ng-container *ngIf="!toUpdate; else updateMsg">
-          <p
-            *ngIf="customer.interacted && !customer.hasError && measurement.interacted && billing.interacted && !billing.hasError; else errorBlock">
-            You are now done.</p>
-        </ng-container>
-
-        <ng-template #updateMsg>
-          <p *ngIf="!customer.hasError && !billing.hasError; else errorBlock">
-            You are now done.</p>
-        </ng-template>
-
-        <ng-template #errorBlock>
-          <p>Please take all the steps and fill all the required fields</p>
-        </ng-template>
-
+        <p>You are now done.</p>
       </div>
       <br />
       <br />
       <div class="row to-bottom">
         <div class="col" align="start">
-          <button mat-stroked-button (click)="confirmReset() && stepper.reset()">Reset</button>
+          <button mat-stroked-button (click)="confirmReset() && stepper.reset()" type="reset">Reset</button>
         </div>
         <div class="col" align="end">
           <button mat-stroked-button matStepperPrevious color="primary">Back</button>
-          <button (click)="onSubmit()" mat-raised-button color="primary"
-            [disabled]="!customer.interacted || customer.hasError || !measurement.interacted || !billing.interacted || billing.hasError"
-            *ngIf="!toUpdate; else updateButton">Submit</button>
-          <ng-template #updateButton>
-            <button (click)="onSubmit()" mat-raised-button color="primary"
-              [disabled]="customer.hasError || billing.hasError">Update</button>
-          </ng-template>
+          <button (click)="onSubmit()" mat-raised-button color="primary">{{!toUpdate ? 'Submit':'Update'}}</button>
         </div>
       </div>
     </mat-step>
@@ -219,13 +241,7 @@
     <button mat-raised-button (click)="stepper.next()"
       *ngIf="stepper.selectedIndex!=3; else submitButton;">Next</button>
     <ng-template #submitButton>
-      <button (click)="onSubmit()" mat-raised-button
-        [disabled]="!customer.interacted || customer.hasError || !measurement.interacted || !billing.interacted || billing.hasError"
-        *ngIf="!toUpdate; else updateButton">Submit</button>
-      <ng-template #updateButton>
-        <button (click)="onSubmit()" mat-raised-button
-          [disabled]="customer.hasError || billing.hasError">Update</button>
-      </ng-template>
+      <button (click)="onSubmit()" mat-raised-button>{{!toUpdate ? 'Submit':'Update'}}</button>
     </ng-template>
   </div>
 </div>

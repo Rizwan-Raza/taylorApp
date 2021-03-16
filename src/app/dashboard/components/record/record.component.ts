@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ActivatedRoute } from '@angular/router';
 import { Record } from '../../models/record';
 import { MeasurementsService } from '../../services/measurements.service';
@@ -18,6 +19,8 @@ export class RecordComponent implements OnInit {
   mi: number = 0;
 
   record: Record;
+
+  labelHidden: boolean = false;
 
   constructor(private _measurementService: MeasurementsService, private route: ActivatedRoute) { }
 
@@ -67,9 +70,25 @@ export class RecordComponent implements OnInit {
     return true;
   }
 
-  get setZero() :boolean {
+  get setZero(): boolean {
     this.mi = 0;
     return true;
   }
 
+  toggleThis(e: MatSlideToggleChange, selector: string) {
+    console.log(e);
+    if (selector.indexOf("label")) {
+      this.labelHidden = e.checked;
+    }
+    if (e.checked) {
+      document.querySelectorAll(selector).forEach(x => x.classList.add("hidden"));
+    } else {
+      document.querySelectorAll(selector).forEach(x => x.classList.remove("hidden"));
+    }
+    document.querySelectorAll(".measurement .mat-list-item").forEach(x => {
+      this.labelHidden ?
+        x.classList.add("flex-0") :
+        x.classList.remove("flex-0");
+    });
+  }
 }

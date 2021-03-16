@@ -168,6 +168,12 @@ export class AddMeasurementsComponent implements OnInit {
     this.customCards.neck, // 7
   ];
 
+  private _pajamaCards = [
+    this.customCards.outerLength, // 1
+    this.customCards.waist, // 2
+    this.customCards.pantsCuff, // 3
+  ];
+
   private _customCards = [
     this.customCards.shirtLength, // 1
     this.customCards.chest, // 2
@@ -186,11 +192,6 @@ export class AddMeasurementsComponent implements OnInit {
     this.customCards.crotch, // 15
     this.customCards.thigh, // 16
     this.customCards.pantsCuff, // 17
-  ];
-
-  private _shirtPantCards = [
-    ...this._shirtCards,
-    ...this._pantCards
   ];
 
   ngOnInit() {
@@ -222,6 +223,7 @@ export class AddMeasurementsComponent implements OnInit {
 
     let recordToAdd = new Record(
       this.customerModel,
+
       this.measurementsModel,
       this.billingModel,
       this.record ? this.record.date : Date.now(),
@@ -233,8 +235,19 @@ export class AddMeasurementsComponent implements OnInit {
       alert("Record " + (this.toUpdate ? "updated" : "added") + " successfully!");
       this.stepper.reset();
       this.customerForm.reset();
+      this.measurementForm.reset();
       this.billingForm.reset();
-      this.stepper.selected.interacted = false;
+
+      this.customerForm.controls['firstName'].setErrors(null);
+      this.customerForm.controls['phoneNumber'].setErrors(null);
+      this.customerForm.controls['tailoring'].setErrors(null);
+      this.customerForm.controls['custom'].setErrors(null);
+
+      this.billingForm.controls['cost'].setErrors(null);
+      this.billingForm.controls['method'].setValue("cash");
+      this.billingForm.controls['status'].setValue("pod");
+      this.billingForm.controls['installment'].setValue("0");
+
       if (this.toUpdate) {
         this._router.navigate(['/record/edited/' + recordToAdd.uid + recordToAdd.date]);
       }
@@ -272,29 +285,30 @@ export class AddMeasurementsComponent implements OnInit {
       ],
       email: [record && record.customer.email],
       address: [record && record.customer.address],
-      tailoring: [record && record.customer.tailoring, Validators.required]
+      tailoring: [record && record.customer.tailoring, Validators.required],
+      custom: [record && record.customer.custom]
     });
 
     this.measurementForm = this._formBuilder.group({
-      neck: [record && record.measurement.neck],
-      chest: [record && record.measurement.chest],
-      waist: [record && record.measurement.waist],
-      shirtSeat: [record && record.measurement.shirtSeat],
-      shirtLength: [record && record.measurement.shirtLength],
-      shoulderWidth: [record && record.measurement.shoulderWidth],
-      armLength: [record && record.measurement.armLength],
-      wrist: [record && record.measurement.wrist],
+      neck: [record && record.measurement.neck, Validators.pattern(/[0-9 /\\]*/)],
+      chest: [record && record.measurement.chest, Validators.pattern(/[0-9 /\\]*/)],
+      waist: [record && record.measurement.waist, Validators.pattern(/[0-9 /\\]*/)],
+      shirtSeat: [record && record.measurement.shirtSeat, Validators.pattern(/[0-9 /\\]*/)],
+      shirtLength: [record && record.measurement.shirtLength, Validators.pattern(/[0-9 /\\]*/)],
+      shoulderWidth: [record && record.measurement.shoulderWidth, Validators.pattern(/[0-9 /\\]*/)],
+      armLength: [record && record.measurement.armLength, Validators.pattern(/[0-9 /\\]*/)],
+      wrist: [record && record.measurement.wrist, Validators.pattern(/[0-9 /\\]*/)],
 
-      pantsHip: [record && record.measurement.pantsHip],
-      pantsSeat: [record && record.measurement.pantsSeat],
-      inseam: [record && record.measurement.inseam],
-      hip: [record && record.measurement.hip],
+      pantsHip: [record && record.measurement.pantsHip, Validators.pattern(/[0-9 /\\]*/)],
+      pantsSeat: [record && record.measurement.pantsSeat, Validators.pattern(/[0-9 /\\]*/)],
+      inseam: [record && record.measurement.inseam, Validators.pattern(/[0-9 /\\]*/)],
+      hip: [record && record.measurement.hip, Validators.pattern(/[0-9 /\\]*/)],
 
-      back: [record && record.measurement.back],
-      outerLength: [record && record.measurement.outerLength],
-      crotch: [record && record.measurement.crotch],
-      thigh: [record && record.measurement.thigh],
-      pantsCuff: [record && record.measurement.pantsCuff],
+      back: [record && record.measurement.back, Validators.pattern(/[0-9 /\\]*/)],
+      outerLength: [record && record.measurement.outerLength, Validators.pattern(/[0-9 /\\]*/)],
+      crotch: [record && record.measurement.crotch, Validators.pattern(/[0-9 /\\]*/)],
+      thigh: [record && record.measurement.thigh, Validators.pattern(/[0-9 /\\]*/)],
+      pantsCuff: [record && record.measurement.pantsCuff, Validators.pattern(/[0-9 /\\]*/)],
 
       other: [record && record.measurement.other]
     });
@@ -303,7 +317,7 @@ export class AddMeasurementsComponent implements OnInit {
       cost: [record && record.billing.cost, Validators.required],
       method: [record ? record.billing.method : 'cash'],
       status: [record ? record.billing.status : 'pod'],
-      installment: [record && record.billing.installment]
+      installment: [record ? record.billing.installment : '0', Validators.required]
     });
 
     if (this.toUpdate) {
@@ -320,35 +334,98 @@ export class AddMeasurementsComponent implements OnInit {
   }
 
   tailorSelectorEvent(e: MatSelectChange) {
+    e?.source?.close();
+    this.customerForm.controls['custom'].setValidators([]);
+    let v: String = e.value;
+    if (v.startsWith("shirt")) {
+      this.cards = this._shirtCards;
+    } else if (v.startsWith("pant")) {
+      this.cards = this._pantCards;
+    } else if (v.startsWith("coat")) {
+      this.cards = this._coatCards;
+    } else if (v.startsWith("jacket")) {
+      this.cards = this._jacketCards;
+    } else if (v.startsWith("kurta")) {
+      this.cards = this._kurtaCards;
+    } else if (v.startsWith("pajama")) {
+      this.cards = this._pajamaCards;
+    } else {
+      this.cards = this._customCards;
+      this.customerForm.controls['custom'].setValidators([Validators.required]);
+    }
     switch (e.value) {
-      case "shirt":
+      case "shirt-0":
         this.tailorSelector = "Shirt";
-        this.cards = this._shirtCards;
         break;
-      case "pant":
+      case "shirt-1":
+        this.tailorSelector = "Open Shirt";
+        break;
+      case "shirt-2":
+        this.tailorSelector = "Bushirt";
+        break;
+      case "pant-0":
         this.tailorSelector = "Pant";
-        this.cards = this._pantCards;
         break;
-      case "coat":
+      case "pant-1":
+        this.tailorSelector = "Long Belt Pant";
+        break;
+      case "pant-2":
+        this.tailorSelector = "Wide Leg Pant";
+        break;
+      case "pant-3":
+        this.tailorSelector = "Trouser";
+        break;
+      case "pant-4":
+        this.tailorSelector = "Jeans";
+        break;
+      case "coat-0":
         this.tailorSelector = "Coat";
-        this.cards = this._coatCards;
         break;
-      case "jacket":
+      case "coat-1":
+        this.tailorSelector = "Coat 2 Button";
+        break;
+      case "coat-2":
+        this.tailorSelector = "Waistcoat";
+        break;
+      case "coat-3":
+        this.tailorSelector = "Jodhpuri Coat";
+        break;
+      case "coat-4":
+        this.tailorSelector = "V Neck Coat";
+        break;
+      case "jacket-0":
+        this.tailorSelector = "Jacket";
+        break;
+      case "jacket-1":
         this.tailorSelector = "Basket Jacket";
-        this.cards = this._jacketCards;
         break;
-      case "kurta":
+      case "jacket-2":
+        this.tailorSelector = "V Neck Jacket";
+        break;
+      case "jacket-3":
+        this.tailorSelector = "Double Breasted Jacket";
+        break;
+      case "kurta-0":
         this.tailorSelector = "Kurta/Kurti";
-        this.cards = this._kurtaCards;
         break;
-      case "shirt_pant":
-        this.tailorSelector = "Shirt + Pant";
-        this.cards = this._shirtPantCards;
+      case "kurta-1":
+        this.tailorSelector = "Pathani Kurta";
+        break;
+      case "pajama-0":
+        this.tailorSelector = "Pajama";
+        break;
+      case "pajama-1":
+        this.tailorSelector = "Chudidaar Pajama";
+        break;
+      case "pajama-2":
+        this.tailorSelector = "Pocket Pajama";
+        break;
+      case "pajama-3":
+        this.tailorSelector = "Shalwaar";
         break;
       case "custom":
       default:
         this.tailorSelector = "Custom";
-        this.cards = this._customCards;
     }
   }
 }

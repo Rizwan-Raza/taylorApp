@@ -82,25 +82,25 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
         predicateBools.push(data.completed);
       }
       if (filter.includes("::incomplete")) {
-        predicateBools.push(data.completed);
+        predicateBools.push(!data.completed);
       }
       if (filter.includes("::shirt")) {
-        predicateBools.push(data.customer.tailoring == "shirt");
+        predicateBools.push(data.customer.tailoring.startsWith("shirt"));
       }
       if (filter.includes("::pant")) {
-        predicateBools.push(data.customer.tailoring == "pant");
+        predicateBools.push(data.customer.tailoring.startsWith("pant"));
       }
       if (filter.includes("::coat")) {
-        predicateBools.push(data.customer.tailoring == "coat");
+        predicateBools.push(data.customer.tailoring.startsWith("coat"));
       }
       if (filter.includes("::jacket")) {
-        predicateBools.push(data.customer.tailoring == "jacket");
+        predicateBools.push(data.customer.tailoring.startsWith("jacket"));
       }
       if (filter.includes("::kurta")) {
-        predicateBools.push(data.customer.tailoring == "kurta");
+        predicateBools.push(data.customer.tailoring.startsWith("kurta"));
       }
-      if (filter.includes("::shirt_pant")) {
-        predicateBools.push(data.customer.tailoring == "shirt_pant");
+      if (filter.includes("::pajama")) {
+        predicateBools.push(data.customer.tailoring.startsWith("pajama"));
       }
       if (filter.includes("::custom")) {
         predicateBools.push(data.customer.tailoring == "custom");
@@ -125,9 +125,9 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     }
   }
 
-  getValue(obj, filter) {
-    return filter.split('.').reduce((o, i) => o[i], obj);
-  }
+  // getValue(obj, filter) {
+  //   return filter.split('.').reduce((o, i) => o[i], obj);
+  // }
 
   deleteItem(id: string) {
     if (confirm("Are you sure You want to Delete this?")) {
@@ -158,16 +158,13 @@ export class ViewAllComponent implements AfterViewInit, OnInit {
     // Load the page + route
     win.loadURL('file://' + __dirname + '/index.html#/record/' + id);
 
-    // For Debug Mode
+    // // For Debug Mode
     // window.open('/index.html#/record/' + id, '_blank', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-    //   // this.dialog.open(RecordComponent,
-    //   //   {
-    //   //     minWidth: 800,
-    //   //     maxHeight: 600,
-    //   //     data: { id: id }
-    //   //   });
+    // this.dialog.open(RecordComponent,
+    //   {
+    //     minWidth: 800,
+    //     maxHeight: 600,
+    //     data: { id: id }
+    //   });
   }
-
-
-
 }

@@ -3,25 +3,25 @@ export class Measurements {
         Object.assign(this, init);
     }
 
-    neck: number;
-    chest: number;
-    waist: number;
-    shirtSeat: number;
-    shirtLength: number;
-    shoulderWidth: number;
-    armLength: number;
-    wrist: number;
+    neck: string;
+    chest: string;
+    waist: string;
+    shirtSeat: string;
+    shirtLength: string;
+    shoulderWidth: string;
+    armLength: string;
+    wrist: string;
 
-    pantsHip: number;
-    pantsSeat: number;
-    inseam: number;
-    hip: number;
+    pantsHip: string;
+    pantsSeat: string;
+    inseam: string;
+    hip: string;
 
-    back: number;
-    outerLength: number;
-    crotch: number;
-    thigh: number;
-    pantsCuff: number;
+    back: string;
+    outerLength: string;
+    crotch: string;
+    thigh: string;
+    pantsCuff: string;
 
     other: string;
 }

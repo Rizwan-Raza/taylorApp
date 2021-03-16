@@ -9,4 +9,5 @@ export class Customer {
     email: string;
     address: string;
     tailoring: string;
+    custom: string;
 }

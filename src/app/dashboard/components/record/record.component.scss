@@ -1,7 +1,6 @@
 .p-4 {
     padding: 2rem;
 }
-
 .mat-expansion-panel {
     border-radius: 0px;
 }
@@ -62,6 +61,42 @@ div.cut-out {
         top: -10px;
     }
 }
+
+#for-tailor {
+    .mat-list {
+        &:not(:first-child) {
+            padding-top: 0px;
+        }
+        .mat-list-item {
+            &.flex-0 {
+                flex-basis: 0;
+            }
+
+            b.label.hidden,
+            span.unit.hidden {
+                display: none;
+            }
+            b.magnitude {
+                border: 1px solid #aaa;
+                padding: 0px 8px;
+                height: 36px;
+                line-height: 36px;
+                width: 80px;
+                text-align: center;
+                &.other {
+                    width: 100%;
+                    text-align: left;
+                }
+            }
+            b.label.other {
+                width: 100px;
+            }
+        }
+    }
+}
+.mat-slide-toggle {
+    margin-right: 16px;
+}
 @media print {
     // .prt-sc.printing {
     .prt-sc {
@@ -90,9 +125,28 @@ div.cut-out {
             .mat-list-base {
                 padding: 0px;
             }
-
-            .mat-list .mat-list-item {
-                height: 28px !important;
+            .mat-list {
+                .mat-list-item {
+                    height: 28px !important;
+                    flex-basis: 0 !important;
+                }
+                &.measurement {
+                    .mat-list-item {
+                        height: 32px !important;
+                        .unit,
+                        .label {
+                            display: none;
+                        }
+                        b.magnitude {
+                            height: 24px !important;
+                            line-height: 24px !important;
+                            width: 64px !important;
+                        }
+                    }
+                }
+                &.other {
+                    padding-top: 8px !important;
+                }
             }
         }
         ::ng-deep .print .mat-expansion-indicator {

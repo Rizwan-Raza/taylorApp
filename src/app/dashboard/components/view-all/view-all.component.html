@@ -28,7 +28,8 @@
     <!-- Tailoring Column -->
     <ng-container matColumnDef="customer.tailoring">
       <th mat-header-cell *matHeaderCellDef>Tailoring</th>
-      <td mat-cell *matCellDef="let row">{{row.customer.tailoring | tailoring}}</td>
+      <td mat-cell *matCellDef="let row">{{row.customer.tailoring | tailoring : false}} <span
+          *ngIf="row.customer.tailoring == 'custom'">({{row.customer.custom}})</span></td>
     </ng-container>
 
     <!-- Cost Column -->

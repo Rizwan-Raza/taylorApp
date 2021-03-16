@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   coat: number = 0;
   jacket: number = 0;
   kurta: number = 0;
-  shirt_pant: number = 0;
+  pajama: number = 0;
   custom: number = 0;
 
   cards = [
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
     { title: 'Coats', link: '/view-all/::coat', value: this.coat },
     { title: 'Basket Jackets', link: '/view-all/::jacket', value: this.jacket },
     { title: 'Kurta / Kurti', link: '/view-all/::kurta', value: this.kurta },
-    { title: 'Shirts + Pants', link: '/view-all/::shirt_pant', value: this.shirt_pant },
+    { title: 'Pajama', link: '/view-all/::pajama', value: this.pajama },
     { title: 'Customs', link: '/view-all/::custom', value: this.custom },
     { title: 'Total Records', link: '/view-all', value: this.total }
   ];
@@ -53,26 +53,45 @@ export class HomeComponent implements OnInit {
         let r = x.payload.doc.data() as Record;
         this.total++;
         switch (r.customer.tailoring) {
-          case "shirt":
+          case "shirt-0":
+          case "shirt-1":
+          case "shirt-2":
+          case "shirt-3":
+          case "shirt-4":
             this.shirt++;
             break;
-          case "pant":
+          case "pant-0":
+          case "pant-1":
+          case "pant-2":
+          case "pant-3":
+          case "pant-4":
             this.pant++;
             break;
-          case "coat":
+          case "coat-0":
+          case "coat-1":
+          case "coat-2":
+          case "coat-3":
+          case "coat-4":
             this.coat++;
             break;
-          case "jacket":
+          case "jacket-0":
+          case "jacket-1":
+          case "jacket-2":
+          case "jacket-3":
             this.jacket++;
             break;
-          case "kurta":
+          case "kurta-0":
+          case "kurta-1":
+          case "kurta-2":
             this.kurta++;
             break;
-          case "shirt_pant":
-            this.shirt_pant++;
+          case "pajama-0":
+          case "pajama-1":
+          case "pajama-2":
+          case "pajama-3":
+            this.pajama++;
             break;
           case "custom":
-          default:
             this.custom++;
             break;
         }
@@ -102,7 +121,7 @@ export class HomeComponent implements OnInit {
       this.cards[6].value = this.coat;
       this.cards[7].value = this.jacket;
       this.cards[8].value = this.kurta;
-      this.cards[9].value = this.shirt_pant;
+      this.cards[9].value = this.pajama;
       this.cards[10].value = this.custom;
 
       this.cards[11].value = this.total;
