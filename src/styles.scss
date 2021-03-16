@@ -1,49 +1,116 @@
+@font-face {
+  font-family: "ProductSans";
+  font-style: normal;
+  font-weight: normal;
+  font-display: auto;
+  src: url(./assets/fonts/ProductSansRegular.ttf);
+}
+
+@font-face {
+  font-family: "ProductSansBold";
+  font-style: normal;
+  font-weight: 900;
+  font-display: auto;
+  src: url(./assets/fonts/ProductSansBold.ttf);
+}
+
+/* fallback */
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: url(./assets/fonts/MaterialIcons-Regular.ttf);
+}
+
+.material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
 /* You can add global styles to this file, and also import other style files */
-html, body {
+
+@import "~@angular/material/theming";
+
+@include mat-core();
+
+// $mat-kt : (500: #6a1b9a,
+// contrast: (500: $light-primary-text));
+$kt-primary: mat-palette($mat-purple, 800, 600, 900);
+$kt-primary-dark: mat-palette($mat-purple, 400, 200, 600);
+$kt-accent: mat-palette($mat-amber);
+
+// The warn palette is optional (defaults to red).
+$kt-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$kt-theme: mat-light-theme($kt-primary, $kt-accent, $kt-warn);
+
+@include angular-material-theme($kt-theme);
+
+$dark-theme: mat-dark-theme($kt-primary-dark, $kt-accent, $kt-warn);
+
+$kt-typography: mat-typography-config(
+  $font-family: '"ProductSans", Arial, Helvetica, sans-serif',
+  $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 500),
+);
+
+// Override typography CSS classes (e.g., mat-h1, mat-display-1, mat-typography, etc.).
+@include mat-base-typography($kt-typography);
+
+// Override typography for a specific Angular Material components.
+@include mat-checkbox-typography($kt-typography);
+
+// Override typography for all Angular Material, including mat-base-typography and all components.
+@include angular-material-typography($kt-typography);
+
+.kt-dark-theme {
+  @include angular-material-theme($dark-theme);
+}
+
+.bg-primary {
+  background-color: mat-color(map-get($kt-theme, primary));
+  color: $light-primary-text;
+}
+.kt-dark-theme .bg-primary {
+  background-color: mat-color(map-get($dark-theme, primary));
+  color: $dark-primary-text;
+}
+
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
   margin: 0;
   padding: 0;
 
   height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "ProductSans", Arial, Helvetica, sans-serif;
+  background-color: #eee;
 }
-
-/* CAN (MUST) BE REMOVED ! Sample Global style */
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  background: url(./assets/background.jpg) no-repeat center fixed;
-  -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-  background-size: cover; /* version standardisée */
-
-  .title {
-    color: white;
-    margin: 0;
-    padding: 50px 20px;
-  }
-
-  a {
-    color: #fff !important;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: #ed3330;
-    padding: 20px;
-    border-radius: 5px;
-    display: inline-block;
-    border: none;
-    transition: all 0.4s ease 0s;
-
-    &:hover {
-      background: #fff;
-      color: #ed3330 !important;
-      letter-spacing: 1px;
-      -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-      -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-      box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
-      transition: all 0.4s ease 0s;
-    }
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b {
+  font-family: "ProductSansBold", Arial, Helvetica, sans-serif;
+}
+body.kt-dark-theme {
+  background-color: #333;
+}
+.kt-dark-theme .themed-text {
+  color: #eee;
 }

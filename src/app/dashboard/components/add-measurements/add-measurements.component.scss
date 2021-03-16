@@ -1,0 +1,138 @@
+.mat-form-field {
+  width: 100%;
+  // font-size: 14px;
+}
+// .mat-card-header .mat-card-title {
+//   margin-bottom: 0px;
+// }
+/******* MatFormField Height *********/
+::ng-deep {
+  .mat-stepper-horizontal {
+    .mat-form-field-flex > .mat-form-field-infix {
+      padding: 0.4em 0px !important;
+    }
+    .mat-form-field-label-wrapper {
+      top: -1.5em;
+    }
+
+    .mat-form-field-appearance-outline {
+      &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+        transform: translateY(-1.1em) scale(0.75);
+        width: 133.33333%;
+      }
+      .mat-form-field-prefix,
+      .mat-form-field-suffix {
+        transition: all 200ms ease-in-out;
+        top: -0.25em !important;
+      }
+
+      &.ng-dirty .mat-form-field-prefix,
+      &.ng-dirty .mat-form-field-suffix,
+      &:focus-within .mat-form-field-prefix,
+      &:focus-within .mat-form-field-suffix {
+        top: 0 !important;
+      }
+    }
+  }
+  /****************/
+  .mat-form-field-infix {
+    width: fit-content !important;
+  }
+
+  .mat-card-header .mat-card-title {
+    margin-bottom: 0px;
+  }
+
+  .mat-card-header-text {
+    margin: 0 !important;
+  }
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.col:last-child {
+  margin-right: 0;
+}
+
+.mat-stepper-horizontal {
+  min-height: calc(100vh - 128px);
+  position: relative;
+}
+
+.mat-form-field {
+  margin-top: 8px;
+}
+
+.mat-radio-button {
+  margin: 0 12px;
+}
+
+button:not(:first-child) {
+  margin-left: 8px;
+}
+.mat-card {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid rgba($color: #000, $alpha: 0.12);
+
+  &:hover .info-button {
+    visibility: visible;
+  }
+
+  .col {
+    flex: unset;
+
+    &:last-child {
+      width: 100%;
+    }
+  }
+
+  .info-button {
+    position: absolute;
+    visibility: hidden;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+.top-right {
+  position: fixed;
+  top: 15px;
+  right: 32px;
+  z-index: 10;
+}
+
+// :not(.ng-animating) .to-bottom {
+//   visibility: visible;
+// }
+.to-bottom {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  transition: all 200ms ease-in;
+}
+::ng-deep .ng-animating .to-bottom {
+  opacity: 0;
+}
+
+.last-step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 262px);
+}
+
+.kt-dark-theme .mat-card {
+  border: 1px solid rgba($color: #fff, $alpha: 0.3) !important;
+}

@@ -1,33 +1,23 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { CoreModule } from './core/core.module';
-
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-
-import { SharedModule } from './shared/shared.module';
-
-import { AppRoutingModule } from './app-routing.module';
-
 // NG Translate
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-// import { HomeModule } from './home/home.module';
-// import { DetailModule } from './detail/detail.module';
-
-import { AppComponent } from './app.component';
-import { NavbarComponent } from './core/navbar/navbar.component';
-import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import { AppConfig } from '../environments/environment';
 import { AccountModule } from './account/account.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { SharedModule } from './shared/shared.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -35,35 +25,34 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, PageNotFoundComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
+    BrowserAnimationsModule,
+    // NoopAnimationsModule,
     HttpClientModule,
+    CommonModule,
     AccountModule,
     CoreModule,
-    CommonModule,
-    BrowserAnimationsModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-
     SharedModule,
-    // HomeModule,
-    // DetailModule,
+    AccountModule,
+    DashboardModule,
+    MatSnackBarModule,
     AppRoutingModule,
+    AngularFireModule.initializeApp(AppConfig.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    },
+    ),
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,0 +1,128 @@
+<mat-form-field appearance="outline" class="full-width-table">
+  <mat-label>Search</mat-label>
+  <input matInput (keyup)="applyFilter($event.target.value)" #filterInput
+    [value]="filterString?.length > 0 ? filterString : ''">
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+  <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <!-- Id Column -->
+    <ng-container matColumnDef="sno">
+      <th mat-header-cell *matHeaderCellDef>S.No</th>
+      <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="customer.firstName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let row">{{row.customer.firstName}} {{row.customer.lastName}}</td>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="customer.phoneNumer">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let row">{{row.customer.phoneNumber}}</td>
+    </ng-container>
+
+    <!-- Tailoring Column -->
+    <ng-container matColumnDef="customer.tailoring">
+      <th mat-header-cell *matHeaderCellDef>Tailoring</th>
+      <td mat-cell *matCellDef="let row">{{row.customer.tailoring | tailoring : false}} <span
+          *ngIf="row.customer.tailoring == 'custom'">({{row.customer.custom}})</span></td>
+    </ng-container>
+
+    <!-- Cost Column -->
+    <ng-container matColumnDef="billing.cost">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Cost</th>
+      <td mat-cell *matCellDef="let row">{{row.billing.cost | currency:'INR'}}</td>
+    </ng-container>
+
+    <!-- Paid Column -->
+    <ng-container matColumnDef="billing.status">
+      <th mat-header-cell *matHeaderCellDef class="text-center">Paid</th>
+      <td mat-cell *matCellDef="let row" class="text-center">
+        <button [matTooltip]="'Mark as ' + (row.billing.status == 'paid' ? 'Unp': 'P')+'aid'" mat-icon-button
+          (click)="updateField(row.uid+row.date, 'billing.status', row.billing.status != 'paid' ? 'paid' : 'pod', 'Marked ' + (row.billing.status == 'paid' ? 'Unp': 'P')+'aid successfully')">
+          <mat-icon [ngStyle]="{'color': (row.billing.status | isPaid | greenRed)}">{{row.billing.status | isPaid |
+            checkUncheck}}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Delivered Column -->
+    <ng-container matColumnDef="completed">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center">Delivered</th>
+      <td mat-cell *matCellDef="let row" class="text-center">
+        <button [matTooltip]="'Mark as ' + (row.completed ? 'Und': 'D')+'elivered'" mat-icon-button
+          (click)="updateField(row.uid+row.date, 'completed', !row.completed, 'Marked ' + (row.completed ? 'Und': 'D')+'elievered successfully')">
+          <mat-icon [ngStyle]="{'color': (row.completed | greenRed)}">{{row.completed | checkUncheck}}</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+      <td mat-cell *matCellDef="let row">{{row.date | date }}
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let row">
+        <button matTooltip="View" mat-icon-button (click)="openRecord(row.uid+row.date)">
+          <mat-icon>launch</mat-icon>
+        </button>
+        <button class="hidden-actions" matTooltip="Edit" mat-icon-button
+          routerLink="/add-measurements/{{row.uid+row.date}}">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button class="hidden-actions" matTooltip="Delete" color="warn" mat-icon-button
+          (click)="deleteItem(row.uid+row.date)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <!-- <button class="hidden-actions" matTooltip="Mark As Paid" mat-icon-button (click)="markAsPaid(row.uid+row.date)"
+          *ngIf="row.billing.status != 'paid'">
+          <mat-icon>price_check</mat-icon>
+        </button>
+        <button class="hidden-actions" matTooltip="Mark As Delivered" mat-icon-button
+          (click)="markAsCompleted(row.uid+row.date)" *ngIf="!row.completed">
+          <mat-icon>done_all</mat-icon>
+        </button> -->
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data.-->
+    <ng-container *ngIf="(filterInput.value.length > 0 || filterString)">
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">No data matching the filter
+          "{{filterInput.value}}"
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="!showLoader">
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          <p class="text-center">No record found</p>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="showLoader">
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          <kt-please-wait [notitle]="true"></kt-please-wait>
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+
+  <mat-paginator #paginator [length]="dataSource?.data.length" [pageIndex]="0" [pageSize]="50"
+    [pageSizeOptions]="[5, 25, 50, 100, 250]">
+  </mat-paginator>
+</div>

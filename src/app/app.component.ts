@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ElectronService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
+import { ElectronService } from './core/services';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +23,10 @@ export class AppComponent {
       console.log('NodeJS childProcess', this.electronService.childProcess);
     } else {
       console.log('Run in browser');
+    }
+
+    if (localStorage.getItem("theme") == "dark") {
+      document.body.classList.add("kt-dark-theme");
     }
   }
 }

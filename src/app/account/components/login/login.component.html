@@ -1,4 +1,61 @@
-Hello
-<navbar></navbar>
-World
-<app-page-not-found></app-page-not-found>
+<div class="container">
+    <div class="bg-primary">
+        <h1 class="themed-text">
+            Welcome again!
+        </h1>
+    </div>
+    <aside *ngIf="!processing && !forgot && !new">
+        <img src="assets/logo.png" class="wamp" />
+
+        <h1 class="themed-text">Login</h1>
+        <form [formGroup]="loginForm" (submit)="submit()">
+            <mat-form-field appearance="outline">
+                <mat-label>E-mail address</mat-label>
+                <input matInput type="text" required formControlName="email">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" required formControlName="password">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary">Login</button>
+        </form>
+    </aside>
+    <aside *ngIf="processing">
+        <mat-progress-spinner mode="indeterminate" color="red">
+        </mat-progress-spinner>
+    </aside>
+    <aside *ngIf="!processing && !new && forgot" class="forgot">
+        <kt-forgot-password (onComplete)="forgotComplete()"></kt-forgot-password>
+    </aside>
+    <aside *ngIf="!processing && !forgot && new" class="forgot">
+        <kt-request-new (onComplete)="newComplete()"></kt-request-new>
+    </aside>
+</div>
+<div id="float_button">
+    <button mat-fab matTooltip="More Options" matTooltipPosition="left" (click)="toggleSettings(panel)" color="primary">
+        <mat-icon aria-label="More Options">menu</mat-icon>
+    </button>
+    <ul #panel>
+        <li>
+            <button mat-mini-fab matTooltip="{{ dMode ? 'Light Mode' : 'Dark Mode'}}" matTooltipPosition="left"
+                (click)="changeTheme()">
+                <mat-icon aria-label="Theming">invert_colors</mat-icon>
+            </button>
+        </li>
+        <li>
+
+            <button mat-mini-fab matTooltip="{{ forgot ? 'Login' : 'Forgot Password?'}}" matTooltipPosition="left"
+                (click)="forgotToggle()">
+                <mat-icon aria-label="Login and Forgot Password option">{{ forgot ? 'lock' : 'vpn_key'}}</mat-icon>
+            </button>
+
+        </li>
+        <li>
+            <button mat-mini-fab matTooltip="{{ new ? 'Login' : 'New User?'}}" matTooltipPosition="left"
+                (click)="newToggle()">
+                <mat-icon aria-label="Login and New User? option">{{ new ? 'lock' : 'person_add'}}</mat-icon>
+            </button>
+        </li>
+    </ul>
+</div>

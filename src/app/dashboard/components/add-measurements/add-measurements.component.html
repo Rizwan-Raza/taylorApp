@@ -1,0 +1,251 @@
+<div *ngIf="customerForm; else loader;">
+  <mat-horizontal-stepper [linear]="true" #stepper class="mat-elevation-z8">
+    <mat-step [stepControl]="customerForm" #customer>
+      <form [formGroup]="customerForm">
+        <ng-template matStepLabel>Customer Information</ng-template>
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-label>First name</mat-label>
+              <input matInput formControlName="firstName" required type="text">
+              <mat-error *ngIf="customerForm.controls['firstName'].hasError('required')">
+                First name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-label>Last name</mat-label>
+              <input matInput formControlName="lastName">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-label>Phone number</mat-label>
+              <span matPrefix>+91 &nbsp; </span>
+              <input matInput #phoneNumber maxlength="10" type="tel" formControlName="phoneNumber" required>
+              <mat-error *ngIf="customerForm.controls['phoneNumber'].hasError('required')">
+                Phone number is <strong>required</strong>
+              </mat-error>
+              <mat-hint align="end">{{phoneNumber.value.length}} / 10</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email">
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <textarea matInput formControlName="address"></textarea>
+        </mat-form-field>
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-label>Tailoring</mat-label>
+              <mat-select formControlName="tailoring" [value]="'custom'" (selectionChange)="tailorSelectorEvent($event)"
+                required>
+                <mat-optgroup label="Shirt">
+                  <mat-option value="shirt-0">Shirt (शर्ट)</mat-option>
+                  <mat-option value="shirt-1">Open Shirt (ओपन शर्ट)</mat-option>
+                  <mat-option value="shirt-2">Bushirt (बुशर्ट)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Pant">
+                  <mat-option value="pant-0">Pant (पैंट)</mat-option>
+                  <mat-option value="pant-1">Long Belt Pant (लॉन्ग बेल्ट पैंट)</mat-option>
+                  <mat-option value="pant-2">Wide Leg Pant (चौड़ामोड़ पैंट)</mat-option>
+                  <mat-option value="pant-3">Trouser (ट्राउजर)</mat-option>
+                  <mat-option value="pant-4">Jeans (जींस)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Coat">
+                  <mat-option value="coat-0">Coat (कोट)</mat-option>
+                  <mat-option value="coat-1">Coat 2 Button (कोट 2 बटन)</mat-option>
+                  <mat-option value="coat-2">Waistcoat (वेस्टकोट)</mat-option>
+                  <mat-option value="coat-3">Jodhpuri Coat (बंदगला कोट)</mat-option>
+                  <mat-option value="coat-4">V Neck Coat (वी गला कोट)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Jacket">
+                  <mat-option value="jacket-0">Jacket (जैकेट)</mat-option>
+                  <mat-option value="jacket-1">Basket Jacket (बास्केट जैकेट)</mat-option>
+                  <mat-option value="jacket-2">V Neck Jacket (वी गला जैकेट)</mat-option>
+                  <mat-option value="jacket-3">Double Breasted Jacket (डबल ब्रेस्ट जैकेट)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Kurta">
+                  <mat-option value="kurta-0">Kurta/Kurti (कुर्ता)</mat-option>
+                  <mat-option value="kurta-1">Pathani Kurta (पठानी कुर्ता)</mat-option>
+                </mat-optgroup>
+                <mat-optgroup label="Pajama">
+                  <mat-option value="pajama-0">Pajama (पजामा)</mat-option>
+                  <mat-option value="pajama-1">Chudidaar Pajama (चूड़ीदार पजामा)</mat-option>
+                  <mat-option value="pajama-2">Pocket Pajama (जेबदार पजामा)</mat-option>
+                  <mat-option value="pajama-3">Shalwaar (शलवार)</mat-option>
+                </mat-optgroup>
+                <mat-option value="custom">Custom</mat-option>
+              </mat-select>
+              <mat-hint>What customer requested to tailor?</mat-hint>
+              <mat-error *ngIf="customerForm.controls['tailoring'].hasError('required')">
+                Tailoring info is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col" *ngIf="customerForm.controls['tailoring'].value == 'custom'">
+            <mat-form-field appearance="outline">
+              <mat-label>Custom Tailoring</mat-label>
+              <input matInput type="text" formControlName="custom" required>
+              <mat-error *ngIf="customerForm.controls['custom'].hasError('required')">
+                Custom Tailoring info is <strong>required</strong> when selected Custom
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <br />
+        <br />
+        <div align="end" class="to-bottom">
+          <button mat-raised-button matStepperNext color="primary">Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="measurementForm" #measurement [completed]="checkCompleted(measurement)">
+      <form [formGroup]="measurementForm">
+        <ng-template matStepLabel>{{tailorSelector}} Measurements</ng-template>
+        <mat-grid-list cols="2" rowHeight="130px">
+          <mat-grid-tile *ngFor="let card of cards; let i = index">
+            <mat-card class="mat-elevation-z0">
+              <div class="row">
+                <div class="col">
+                  <img src="{{card.img}}" height="80px" />
+                </div>
+                <div class="col">
+                  <mat-card-header>
+                    <mat-card-title>
+                      {{i+1}}. {{card.title}}
+                      <button mat-icon-button class="info-button" *ngIf="card.dImg"
+                        (click)="openInfoDialog(card.title,card.dImg, card.desc)">
+                        <mat-icon>help_outline</mat-icon>
+                      </button>
+                    </mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Size</mat-label>
+                      <input matInput type="text" formControlName="{{card.control}}" pattern="[0-9 /\\]*">
+                      <span matSuffix> &nbsp; inches</span>
+                    </mat-form-field>
+                  </mat-card-content>
+                </div>
+              </div>
+            </mat-card>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="2">
+            <mat-card class="mat-elevation-z0">
+              <mat-card-header>
+                <mat-card-title>
+                  Others
+                  <!-- <button mat-icon-button class="info-button">
+                      <mat-icon>help_outline</mat-icon>
+                    </button> -->
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-form-field appearance="outline">
+                  <mat-label>Other (if any)</mat-label>
+                  <textarea matInput formControlName="other" rows="1"></textarea>
+                </mat-form-field>
+              </mat-card-content>
+            </mat-card>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <br />
+        <br />
+        <div align="end" class="to-bottom">
+          <button mat-stroked-button matStepperPrevious color="primary">Back</button>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="billingForm" #billing [completed]="checkCompleted(billing)">
+      <form [formGroup]="billingForm">
+        <ng-template matStepLabel>Billing Information</ng-template>
+        <div class="row">
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <span matPrefix>₹ &nbsp; </span>
+              <mat-label>Total Cost</mat-label>
+              <input matInput type="number" formControlName="cost">
+              <mat-error *ngIf="billingForm.controls['cost'].hasError('required')">
+                Cost is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="outline">
+              <mat-label>Payment Method</mat-label>
+              <mat-select formControlName="method" [value]="'cash'">
+                <mat-option value="cash">Cash</mat-option>
+                <mat-option value="upi">UPI</mat-option>
+                <mat-option value="other">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <br />
+        <div>
+          <label>Status: </label>
+          <mat-radio-group formControlName="status">
+            <mat-radio-button value="pod">Pay On Delivery</mat-radio-button>
+            <mat-radio-button value="paid">Paid</mat-radio-button>
+            <mat-radio-button value="install">Installment</mat-radio-button>
+          </mat-radio-group>
+          <br />
+          <br />
+          <mat-form-field appearance="outline" *ngIf="billingForm.controls['status'].value == 'install'">
+            <mat-label>Installed Cost</mat-label>
+            <span matPrefix>₹ &nbsp; </span>
+            <input matInput type="number" formControlName="installment">
+          </mat-form-field>
+        </div>
+
+        <br />
+        <br />
+        <div align="end" class="to-bottom">
+          <button mat-stroked-button matStepperPrevious color="primary">Back</button>
+          <button mat-raised-button matStepperNext color="primary">Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <div class="last-step">
+        <p>You are now done.</p>
+      </div>
+      <br />
+      <br />
+      <div class="row to-bottom">
+        <div class="col" align="start">
+          <button mat-stroked-button (click)="confirmReset() && stepper.reset()" type="reset">Reset</button>
+        </div>
+        <div class="col" align="end">
+          <button mat-stroked-button matStepperPrevious color="primary">Back</button>
+          <button (click)="onSubmit()" mat-raised-button color="primary">{{!toUpdate ? 'Submit':'Update'}}</button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+  <div class="top-right">
+    <button mat-raised-button color="primary" (click)="stepper.previous()"
+      *ngIf="stepper.selectedIndex!=0;">Back</button>
+    <button mat-raised-button (click)="stepper.next()"
+      *ngIf="stepper.selectedIndex!=3; else submitButton;">Next</button>
+    <ng-template #submitButton>
+      <button (click)="onSubmit()" mat-raised-button>{{!toUpdate ? 'Submit':'Update'}}</button>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #loader>
+  <kt-please-wait></kt-please-wait>
+</ng-template>
